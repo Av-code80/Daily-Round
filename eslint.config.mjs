@@ -13,6 +13,21 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Forbid `any` type — all types must be explicit (CLAUDE.md rule)
+      "@typescript-eslint/no-explicit-any": "error",
+
+      // Catch unused variables — ignore args prefixed with _ (e.g. _event)
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+
+      // Prevent accidental console.log in production (warn/error allowed)
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+    },
+  },
 ]);
 
 export default eslintConfig;
