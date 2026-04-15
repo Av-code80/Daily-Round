@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
+import { Plus_Jakarta_Sans, JetBrains_Mono, Geist } from 'next/font/google'
 import './globals.css'
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -25,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}
+      className={cn(plusJakartaSans.variable, jetbrainsMono.variable, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
       <body className="min-h-full antialiased">{children}</body>
