@@ -1,0 +1,30 @@
+{
+  "Auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Adresse email",
+    "emailPlaceholder": "votre@email.com",
+    "sendMagicLink": "Envoyer le lien de connexion",
+    "magicLinkSent": "Lien envoyé ! Vérifiez votre boîte mail.",
+    "magicLinkError": "Une erreur est survenue. Réessayez.",
+    "invalidEmail": "Adresse email invalide",
+    "emailRequired": "L'adresse email est requise",
+    "welcomeBack": "Bon retour",
+    "loginSubtitle": "Connectez-vous pour accéder à vos tournées"
+  },
+  "Navigation": {
+    "tournees": "Tournées",
+    "map": "Carte",
+    "incidents": "Incidents",
+    "profile": "Profil"
+  },
+  "Common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "confirm": "Confirmer"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "Auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "email": "Email address",
+    "emailPlaceholder": "your@email.com",
+    "sendMagicLink": "Send magic link",
+    "magicLinkSent": "Link sent! Check your inbox.",
+    "magicLinkError": "Something went wrong. Please try again.",
+    "invalidEmail": "Invalid email address",
+    "emailRequired": "Email address is required",
+    "welcomeBack": "Welcome back",
+    "loginSubtitle": "Sign in to access your delivery rounds"
+  },
+  "Navigation": {
+    "tournees": "Rounds",
+    "map": "Map",
+    "incidents": "Incidents",
+    "profile": "Profile"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  }
+}

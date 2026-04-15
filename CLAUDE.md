@@ -89,6 +89,10 @@ Brand orange `#FF6B35`, navy `#1B2838`. Font: Plus Jakarta Sans (headings + body
 
 GitHub MCP for PRs and issues. Context7 for up-to-date library docs. See `.mcp.json` for project-scoped servers.
 
+## React 19 & Next 16
+
+- Use React 19 new hooks, features and potentials if only needed
+
 ## Do NOT
 
 - Do not use `localStorage` or `sessionStorage` — use React state or Zustand
@@ -98,6 +102,3 @@ GitHub MCP for PRs and issues. Context7 for up-to-date library docs. See `.mcp.j
 - Do not install packages without checking if Supabase/Next.js/Shadcn already provides the functionality
 - Do not create API routes when Server Actions suffice
 - Do not use `useEffect` for data fetching — use TanStack Query
-
-
-
