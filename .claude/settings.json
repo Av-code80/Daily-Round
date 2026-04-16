@@ -1,10 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(npm run *)",
-      "Bash(npx supabase *)",
-      "Bash(git *)"
-    ]
+    "allow": ["Bash(npm run *)", "Bash(npx supabase *)", "Bash(git *)"]
   },
   "hooks": {
     "PostToolUse": [
@@ -12,6 +8,7 @@
         "matcher": "Edit|Write",
         "hooks": [
           {
+            "type": "command",
             "command": "npx prettier --write $FILE_PATH 2>/dev/null || true"
           }
         ]

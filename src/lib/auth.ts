@@ -22,9 +22,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: '/auth/login',
-    verifyRequest: '/auth/verify',
-    error: '/auth/error',
+    signIn: '/fr/auth/login',
+    verifyRequest: '/fr/auth/verify',
+    error: '/fr/auth/error',
   },
   callbacks: {
     session({ session, user }) {

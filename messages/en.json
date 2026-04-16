@@ -10,7 +10,14 @@
     "invalidEmail": "Invalid email address",
     "emailRequired": "Email address is required",
     "welcomeBack": "Welcome back",
-    "loginSubtitle": "Sign in to access your delivery rounds"
+    "loginSubtitle": "Sign in to access your delivery rounds",
+    "verifyTitle": "Check your inbox",
+    "verifySubtitle": "A sign-in link has been sent to your email address. Click the link to sign in.",
+    "verifySpam": "Can't find the email? Check your spam folder.",
+    "errorTitle": "Something went wrong",
+    "errorSubtitle": "We couldn't sign you in. The link may have expired or already been used.",
+    "backToLogin": "Back to sign in",
+    "sending": "Sending..."
   },
   "Navigation": {
     "tournees": "Rounds",
