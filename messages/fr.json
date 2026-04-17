@@ -10,7 +10,14 @@
     "invalidEmail": "Adresse email invalide",
     "emailRequired": "L'adresse email est requise",
     "welcomeBack": "Bon retour",
-    "loginSubtitle": "Connectez-vous pour accéder à vos tournées"
+    "loginSubtitle": "Connectez-vous pour accéder à vos tournées",
+    "verifyTitle": "Vérifiez votre boîte mail",
+    "verifySubtitle": "Un lien de connexion a été envoyé à votre adresse email. Cliquez sur le lien pour vous connecter.",
+    "verifySpam": "Vous ne trouvez pas l'email ? Vérifiez vos spams.",
+    "errorTitle": "Une erreur est survenue",
+    "errorSubtitle": "Impossible de vous connecter. Le lien est peut-être expiré ou déjà utilisé.",
+    "backToLogin": "Retour à la connexion",
+    "sending": "Envoi en cours..."
   },
   "Navigation": {
     "tournees": "Tournées",
