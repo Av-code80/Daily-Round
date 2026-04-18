@@ -17,13 +17,19 @@
     "errorTitle": "Something went wrong",
     "errorSubtitle": "We couldn't sign you in. The link may have expired or already been used.",
     "backToLogin": "Back to sign in",
-    "sending": "Sending..."
+    "sending": "Sending...",
+    "signOutConfirmTitle": "Sign out?",
+    "signOutConfirmMessage": "You'll need to sign in again to access your rounds."
   },
   "Navigation": {
     "tournees": "Rounds",
     "map": "Map",
     "incidents": "Incidents",
     "profile": "Profile"
+  },
+  "Profile": {
+    "title": "Profile",
+    "email": "Email address"
   },
   "Common": {
     "loading": "Loading...",

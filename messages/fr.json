@@ -17,13 +17,19 @@
     "errorTitle": "Une erreur est survenue",
     "errorSubtitle": "Impossible de vous connecter. Le lien est peut-être expiré ou déjà utilisé.",
     "backToLogin": "Retour à la connexion",
-    "sending": "Envoi en cours..."
+    "sending": "Envoi en cours...",
+    "signOutConfirmTitle": "Se déconnecter ?",
+    "signOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos tournées."
   },
   "Navigation": {
     "tournees": "Tournées",
     "map": "Carte",
     "incidents": "Incidents",
     "profile": "Profil"
+  },
+  "Profile": {
+    "title": "Profil",
+    "email": "Adresse email"
   },
   "Common": {
     "loading": "Chargement...",
