@@ -1,9 +1,11 @@
 'use server'
 import { redirect } from 'next/navigation'
 import { getLocale } from 'next-intl/server'
-import { signIn } from '@/lib/auth'
+import { signIn, signOut } from '@/lib/auth'
 
-export async function loginWithEmail(email: string): Promise<{ error: string } | void> {
+export async function loginWithEmail(
+  email: string,
+): Promise<{ error: string } | void> {
   const locale = await getLocale()
 
   try {
@@ -21,3 +23,18 @@ export async function loginWithEmail(email: string): Promise<{ error: string } |
     return { error: 'auth_error' }
   }
 }
+
+// Signout
+export async function signOutUser(): Promise<{ error: string } | void> {
+  const locale = await getLocale()
+
+  try {
+    await signOut({ redirectTo: `/${locale}/auth/login` })
+  } catch (error) {
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
+      redirect(`/${locale}/auth/login`)
+    }
+    return { error: 'auth_error' }
+  }
+}
+
