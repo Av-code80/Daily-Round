@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  cacheComponents: true, // enable PPR + 'use cache' directive
 }
 
 export default withNextIntl(nextConfig)
