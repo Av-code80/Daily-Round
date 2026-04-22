@@ -1,5 +1,5 @@
 'use client'
-import { Home, Map, Bell, User, TruckElectric } from 'lucide-react'
+import { Home, Map, Bell, User, TruckElectric, KeyRound } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 import {
@@ -9,11 +9,14 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
+
 const items = [
   { href: '/', icon: Home, key: 'tournees' },
   { href: '/map', icon: Map, key: 'map' },
+  { href: '/door-codes/new', icon: KeyRound, key: 'doorCodes' },
   { href: '/incidents', icon: Bell, key: 'incidents' },
 ] as const
+
 
 export function SideNav() {
   const t = useTranslations('Navigation')

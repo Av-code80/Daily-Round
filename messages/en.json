@@ -21,9 +21,31 @@
     "signOutConfirmTitle": "Sign out?",
     "signOutConfirmMessage": "You'll need to sign in again to access your rounds."
   },
+  "DoorCodes": {
+    "newTitle": "Add a door code",
+    "form": {
+      "address": "Address",
+      "city": "City",
+      "postal_code": "Postal code",
+      "arrondissement": "Arrondissement",
+      "code": "Code",
+      "floor": "Floor",
+      "instructions": "Access hint (reception, guard, buzzer…)",
+      "parking_hint": "Parking hint",
+      "submit": "Save",
+      "submitting": "Saving…",
+      "success": "Thanks — code added to the community.",
+      "errors": {
+        "invalid_input": "Please check the fields in red.",
+        "not_authenticated": "Please log in first.",
+        "db_error": "Could not save. Try again."
+      }
+    }
+  },
   "Navigation": {
     "tournees": "Rounds",
     "map": "Map",
+    "doorCodes": "Door codes",
     "incidents": "Incidents",
     "profile": "Profile"
   },
