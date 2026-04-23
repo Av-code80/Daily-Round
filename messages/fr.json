@@ -21,9 +21,31 @@
     "signOutConfirmTitle": "Se déconnecter ?",
     "signOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos tournées."
   },
+  "DoorCodes": {
+    "newTitle": "Ajouter un code d'accès",
+    "form": {
+      "address": "Adresse",
+      "city": "Ville",
+      "postal_code": "Code postal",
+      "arrondissement": "Arrondissement",
+      "code": "Code",
+      "floor": "Étage",
+      "instructions": "Indice d'accès (réception, gardien, interphone…)",
+      "parking_hint": "Indice de stationnement",
+      "submit": "Enregistrer",
+      "submitting": "Enregistrement en cours…",
+      "success": "Merci — le code a été ajouté à la communauté.",
+      "errors": {
+        "invalid_input": "Veuillez vérifier les champs en rouge.",
+        "not_authenticated": "Veuillez vous connecter d'abord.",
+        "db_error": "Impossible d'enregistrer. Réessayez."
+      }
+    }
+  },
   "Navigation": {
     "tournees": "Tournées",
     "map": "Carte",
+    "doorCodes": "Codes porte",
     "incidents": "Incidents",
     "profile": "Profil"
   },
