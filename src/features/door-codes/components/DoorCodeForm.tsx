@@ -1,51 +1,31 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Loader2, SaveAll } from 'lucide-react'
 
-import { doorCodeSchema, type DoorCodeFormValues } from '../schemas'
+import { type DoorCodeFormValues } from '../schemas'
 import { createDoorCode } from '../actions'
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-
-const defaults: DoorCodeFormValues = {
-  address: '',
-  city: '',
-  code: '',
-  postal_code: '',
-  arrondissement: '',
-  floor: '',
-  instructions: '',
-  parking_hint: '',
-}
+import { useDoorCodeDraft } from '../hooks/use-door-code-draft'
 
 export function DoorCodeForm() {
   const t = useTranslations('DoorCodes.form')
   const [success, setSuccess] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<DoorCodeFormValues>({
-    resolver: zodResolver(doorCodeSchema),
-    defaultValues: defaults,
-    mode: 'onChange',
-  })
+  const { form, onSuccess } = useDoorCodeDraft()
+const { register, handleSubmit, formState: { errors } } = form
 
   const mutation = useMutation({
     mutationFn: createDoorCode,
     onSuccess: (result) => {
       if (result.ok) {        
         setSuccess(true)
-        reset(defaults)
+        onSuccess()
       }
     },
   })  
