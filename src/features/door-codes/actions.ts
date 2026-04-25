@@ -2,6 +2,7 @@
 import { auth } from '@/lib/auth'
 import { DoorCodeFormValues, doorCodeSchema } from './schemas'
 import { createServiceClient } from '@/lib/supabase/service'
+import { revalidateTag} from 'next/cache'
 
 type CreateDoorCodeResult =
   | { ok: true; id: string }
@@ -60,6 +61,7 @@ export async function createDoorCode(
     })
     return { ok: false, error: 'db_error' }
   }
-
+  
+  revalidateTag(`codes:${postal_code || 'all'}`, 'max' )
   return { ok: true, id: data.id }
 }

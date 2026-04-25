@@ -33,7 +33,7 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
+    <form id='login-form' onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
       <div className='space-y-2'>
         <Label htmlFor='email' className='text-blue-100 text-sm font-medium'>
           {t('email')}
