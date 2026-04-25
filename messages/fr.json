@@ -40,6 +40,15 @@
         "not_authenticated": "Veuillez vous connecter d'abord.",
         "db_error": "Impossible d'enregistrer. Réessayez."
       }
+    },
+    "browseTitle": "Codes d'entrée",
+    "browseSubtitle": "Partagés par les livreurs, pour les livreurs.",
+    "clearSearch": "Effacer",
+    "contribute": "Contribuer",
+    "searchPlaceholder": "Chercher adresse ou ville…",
+    "empty": "Aucun code ne correspond pour l'instant. Soyez le premier à en ajouter un.",
+    "card": {
+      "floor": "Étage {n}"
     }
   },
   "Navigation": {
@@ -60,6 +69,7 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "delete": "Supprimer",
-    "confirm": "Confirmer"
+    "confirm": "Confirmer",
+    "back": "Retour"
   }
 }

@@ -40,6 +40,15 @@
         "not_authenticated": "Please log in first.",
         "db_error": "Could not save. Try again."
       }
+    },
+    "browseTitle": "Door codes",
+    "browseSubtitle": "Shared by drivers, for drivers.",
+    "clearSearch": "Clear",
+    "contribute": "Contribute",
+    "searchPlaceholder": "Search address or city…",
+    "empty": "No codes match yet. Be the first to contribute one.",
+    "card": {
+      "floor": "Floor {n}"
     }
   },
   "Navigation": {
@@ -60,6 +69,7 @@
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "back": "Back"
   }
 }
