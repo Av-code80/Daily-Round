@@ -19,7 +19,9 @@
     "backToLogin": "Back to sign in",
     "sending": "Sending...",
     "signOutConfirmTitle": "Sign out?",
-    "signOutConfirmMessage": "You'll need to sign in again to access your rounds."
+    "signOutConfirmMessage": "You'll need to sign in again to access your rounds.",
+    "continueWithGoogle": "Continue with Google",
+    "orDivider": "or"
   },
   "DoorCodes": {
     "newTitle": "Add a door code",
@@ -39,6 +41,12 @@
         "invalid_input": "Please check the fields in red.",
         "not_authenticated": "Please log in first.",
         "db_error": "Could not save. Try again."
+      },
+      "emptyTitle": "No codes match yet",
+      "error": {
+        "title": "Couldn't load codes",
+        "hint": "Something went wrong on our side. Try again in a moment.",
+        "retry": "Try again"
       }
     },
     "browseTitle": "Door codes",
@@ -49,6 +57,19 @@
     "empty": "No codes match yet. Be the first to contribute one.",
     "card": {
       "floor": "Floor {n}"
+    },
+    "voice": {
+      "tab": "Speak",
+      "tapToRecord": "Tap to record",
+      "tapToStop": "Tap to stop",
+      "transcribing": "Transcribing…",
+      "typeTab": "Fill manually",
+      "hint": "Speak naturally in French: address, code, floor, parking…",
+      "errors": {
+        "micDenied": "Microphone access denied.",
+        "transcriptionFailed": "Couldn't transcribe audio. Try again.",
+        "extractionFailed": "Couldn't understand the recording. Try again or fill manually."
+      }
     }
   },
   "Navigation": {

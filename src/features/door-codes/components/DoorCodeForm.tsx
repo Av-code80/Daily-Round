@@ -13,11 +13,15 @@ import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { useDoorCodeDraft } from '../hooks/use-door-code-draft'
 import { useRouter } from 'next/navigation'
+import { VoiceRecorder } from './VoiceRecorder'
 
 export function DoorCodeForm() {
   const t = useTranslations('DoorCodes.form')
+  const tVoice = useTranslations('DoorCodes.voice')
   const router = useRouter()
   const [success, setSuccess] = useState(false)
+  const [inputMode, setInputMode] = useState<'type' | 'speak'>('type')
+  const [voiceError, setVoiceError] = useState<string | null>(null)
 
   const { form, onSuccess } = useDoorCodeDraft()
   const {
@@ -39,7 +43,24 @@ export function DoorCodeForm() {
   const onSubmit = (values: DoorCodeFormValues) => {
     setSuccess(false)
     mutation.mutate(values)
-    router.push('/door-codes')
+    setTimeout(() => router.push('/door-codes'), 1200)
+  }
+
+  const handleTranscribed = (data: Partial<DoorCodeFormValues>) => {
+    form.reset({ ...form.getValues(), ...data })
+    setVoiceError(null)
+    setInputMode('type')
+  }
+
+  const handleVoiceError = (errorCode: string) => {
+    const messages: Record<string, string> = {
+      mic_denied: tVoice('errors.micDenied'),
+      transcription_failed: tVoice('errors.transcriptionFailed'),
+      extraction_failed: tVoice('errors.extractionFailed'),
+      no_audio: tVoice('errors.transcriptionFailed'),
+    }
+    setVoiceError(messages[errorCode] ?? tVoice('errors.transcriptionFailed'))
+    setInputMode('type')
   }
 
   const serverError =
@@ -50,13 +71,46 @@ export function DoorCodeForm() {
   const monoInputClass = inputClass + ' font-mono tracking-wider'
 
   return (
-      <form
-        id='door-code-form'
-        onSubmit={handleSubmit(onSubmit)}
-        aria-busy={mutation.isPending}
-        noValidate
-        className='space-y-4 mx-auto max-w-lg border p-6 rounded-lg bg-white/80 backdrop-blur-sm shadow-xl shadow-[#1B2838]/20'
-      >
+    <form
+      id='door-code-form'
+      onSubmit={handleSubmit(onSubmit)}
+      aria-busy={mutation.isPending}
+      noValidate
+      className='space-y-4 mx-auto max-w-lg border p-6 rounded-lg bg-white/80 backdrop-blur-sm shadow-xl shadow-[#1B2838]/20'
+    >
+      <div className='flex rounded-xl overflow-hidden border border-[#1B2838]/15 mb-1'>
+        <button
+          type='button'
+          onClick={() => setInputMode('type')}
+          className={`flex-1 h-10 text-sm font-medium transition-colors ${
+            inputMode === 'type'
+              ? 'bg-[#FF6B35] text-white'
+              : 'bg-white text-[#1B2838]/60 hover:bg-[#FF6B35]/10'
+          }`}
+        >
+          {tVoice('typeTab')}
+        </button>
+        <button
+          type='button'
+          onClick={() => {
+            setInputMode('speak')
+            setVoiceError(null)
+          }}
+          className={`flex-1 h-10 text-sm font-medium transition-colors ${
+            inputMode === 'speak'
+              ? 'bg-[#FF6B35] text-white'
+              : 'bg-white text-[#1B2838]/60 hover:bg-[#FF6B35]/10'
+          }`}
+        >
+          🎤 {tVoice('tab')}
+        </button>
+      </div>
+      {inputMode === 'speak' ? (
+        <VoiceRecorder
+          onTranscribed={handleTranscribed}
+          onError={handleVoiceError}
+        />
+      ) : (
         <fieldset
           disabled={mutation.isPending}
           className='space-y-4 border-0 p-0 m-0 disabled:opacity-40 transition-opacity'
@@ -162,18 +216,25 @@ export function DoorCodeForm() {
             />
           </Field>
         </fieldset>
+      )}
 
-        {serverError && (
-          <p role='alert' className='text-sm text-destructive'>
-            {t(`errors.${serverError}`)}
-          </p>
-        )}
-        {success && (
-          <p role='status' className='text-sm text-green-600'>
-            {t('success')}
-          </p>
-        )}
+      {serverError && (
+        <p role='alert' className='text-sm text-destructive'>
+          {t(`errors.${serverError}`)}
+        </p>
+      )}
+      {voiceError && (
+        <p role='alert' className='text-sm text-destructive'>
+          {voiceError}
+        </p>
+      )}
+      {success && (
+        <p role='status' className='text-sm text-green-600'>
+          {t('success')}
+        </p>
+      )}
 
+      {inputMode === 'type' && (
         <Button
           type='submit'
           disabled={mutation.isPending}
@@ -191,7 +252,8 @@ export function DoorCodeForm() {
             </>
           )}
         </Button>
-      </form>
+      )}
+    </form>
   )
 }
 

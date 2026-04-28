@@ -28,6 +28,7 @@ export async function SearchResult({ searchParams }: SearchParamsProps) {
 
 async function EmptyState() {
   const t = await getTranslations('DoorCodes')
+
   return (
     <p className='rounded-lg border border-dashed border-[#1B2838]/20 p-8 text-center text-sm text-muted-foreground'>
       {t('empty')}

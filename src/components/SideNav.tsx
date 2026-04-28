@@ -13,7 +13,7 @@ import {
 const items = [
   { href: '/', icon: Home, key: 'tournees' },
   { href: '/map', icon: Map, key: 'map' },
-  { href: '/door-codes/new', icon: KeyRound, key: 'doorCodes' },
+  { href: '/door-codes', icon: KeyRound, key: 'doorCodes' },
   { href: '/incidents', icon: Bell, key: 'incidents' },
 ] as const
 
