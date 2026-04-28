@@ -2,7 +2,23 @@
 import { auth } from '@/lib/auth'
 import { DoorCodeFormValues, doorCodeSchema } from './schemas'
 import { createServiceClient } from '@/lib/supabase/service'
-import { revalidateTag} from 'next/cache'
+import { revalidateTag } from 'next/cache'
+import OpenAI from 'openai'
+import { z } from 'zod'
+import { EXTRACTION_SYSTEM_PROMPT } from './utils/extraction-prompt'
+
+const openai = new OpenAI()
+
+const ExtractionSchema = z.object({
+  address: z.string(),
+  city: z.string(),
+  postal_code: z.string(),
+  arrondissement: z.string(),
+  code: z.string(),
+  floor: z.string(),
+  instructions: z.string(),
+  parking_hint: z.string(),
+})
 
 type CreateDoorCodeResult =
   | { ok: true; id: string }
@@ -61,7 +77,49 @@ export async function createDoorCode(
     })
     return { ok: false, error: 'db_error' }
   }
-  
-  revalidateTag(`codes:${postal_code || 'all'}`, 'max' )
+
+  revalidateTag(`codes:${postal_code || 'all'}`, 'max')
   return { ok: true, id: data.id }
+}
+
+export async function transcribeDoorCode(
+  formData: FormData,
+): Promise<{ data: Partial<DoorCodeFormValues> } | { error: string }> {
+  const audio = formData.get('audio')
+  if (!(audio instanceof File)) return { error: 'no_audio' }
+
+  console.warn('[transcribeDoorCode] audio size (bytes):', audio.size)
+  if (audio.size < 3000) return { error: 'transcription_failed' }
+
+  const transcription = await openai.audio.transcriptions.create({
+    file: audio,
+    model: 'whisper-1',
+    language: 'fr',
+    // Anchors Whisper to the delivery domain — suppresses hallucinations on silence
+    prompt: "Un livreur décrit une adresse en France : rue, ville, code postal, code d'accès, étage, instructions.",
+  })
+  console.warn('[transcribeDoorCode] transcript:', transcription.text)
+
+  const HALLUCINATION = 'Sous-titres réalisés'
+  if (!transcription.text || transcription.text.includes(HALLUCINATION)) {
+    return { error: 'transcription_failed' }
+  }
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    response_format: { type: 'json_object'},
+    messages: [
+      { role: 'system', content: EXTRACTION_SYSTEM_PROMPT },
+      { role: 'user', content: transcription.text },
+    ],
+  })
+
+const raw = completion.choices[0]?.message.content
+  console.warn('[transcribeDoorCode] raw extraction:', raw)
+  if (!raw) return { error: 'extraction_failed'}
+
+  const result = ExtractionSchema.safeParse(JSON.parse(raw))
+  if (!result.success) return { error: 'extraction_failed' }
+
+  return { data: result.data }
 }

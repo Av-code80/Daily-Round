@@ -19,7 +19,9 @@
     "backToLogin": "Retour à la connexion",
     "sending": "Envoi en cours...",
     "signOutConfirmTitle": "Se déconnecter ?",
-    "signOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos tournées."
+    "signOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos tournées.",
+    "continueWithGoogle": "Continuer avec Google",
+    "orDivider": "ou"
   },
   "DoorCodes": {
     "newTitle": "Ajouter un code d'accès",
@@ -39,6 +41,12 @@
         "invalid_input": "Veuillez vérifier les champs en rouge.",
         "not_authenticated": "Veuillez vous connecter d'abord.",
         "db_error": "Impossible d'enregistrer. Réessayez."
+      },
+      "emptyTitle": "Aucun code pour l'instant",
+      "error": {
+        "title": "Impossible de charger les codes",
+        "hint": "Une erreur s'est produite. Réessayez dans un instant.",
+        "retry": "Réessayer"
       }
     },
     "browseTitle": "Codes d'entrée",
@@ -49,6 +57,19 @@
     "empty": "Aucun code ne correspond pour l'instant. Soyez le premier à en ajouter un.",
     "card": {
       "floor": "Étage {n}"
+    },
+    "voice": {
+      "tab": "Dicter",
+      "tapToRecord": "Appuyez pour enregistrer",
+      "tapToStop": "Appuyez pour arrêter",
+      "transcribing": "Transcription en cours…",
+      "typeTab": "Remplir manuellement",
+      "hint": "Dictez naturellement : adresse, code, étage, parking…",
+      "errors": {
+        "micDenied": "Accès au microphone refusé.",
+        "transcriptionFailed": "Impossible de transcrire. Réessayez.",
+        "extractionFailed": "Enregistrement incompris. Réessayez ou remplissez manuellement."
+      }
     }
   },
   "Navigation": {

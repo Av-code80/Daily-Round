@@ -24,7 +24,20 @@ export async function loginWithEmail(
   }
 }
 
-// Signout
+export async function signinWithGoogle(): Promise<{ error: string } | void> {
+  const locale = await getLocale()
+  try {
+    await signIn('google', { redirectTo: `/${locale}/` })
+  } catch (error) {
+    // Auth.js throws NEXT_REDIRECT to send the browser to Google's consent screen.
+    // Re-throw so Next.js can perform the redirect; only treat real failures as errors.
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
+      throw error
+    }
+    return { error: 'auth_error' }
+  }
+}
+
 export async function signOutUser(): Promise<{ error: string } | void> {
   const locale = await getLocale()
 
@@ -37,4 +50,5 @@ export async function signOutUser(): Promise<{ error: string } | void> {
     return { error: 'auth_error' }
   }
 }
+
 
