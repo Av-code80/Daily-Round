@@ -88,7 +88,6 @@ export async function transcribeDoorCode(
   const audio = formData.get('audio')
   if (!(audio instanceof File)) return { error: 'no_audio' }
 
-  console.warn('[transcribeDoorCode] audio size (bytes):', audio.size)
   if (audio.size < 3000) return { error: 'transcription_failed' }
 
   const transcription = await openai.audio.transcriptions.create({
@@ -98,7 +97,6 @@ export async function transcribeDoorCode(
     // Anchors Whisper to the delivery domain — suppresses hallucinations on silence
     prompt: "Un livreur décrit une adresse en France : rue, ville, code postal, code d'accès, étage, instructions.",
   })
-  console.warn('[transcribeDoorCode] transcript:', transcription.text)
 
   const HALLUCINATION = 'Sous-titres réalisés'
   if (!transcription.text || transcription.text.includes(HALLUCINATION)) {
@@ -115,7 +113,6 @@ export async function transcribeDoorCode(
   })
 
 const raw = completion.choices[0]?.message.content
-  console.warn('[transcribeDoorCode] raw extraction:', raw)
   if (!raw) return { error: 'extraction_failed'}
 
   const result = ExtractionSchema.safeParse(JSON.parse(raw))
