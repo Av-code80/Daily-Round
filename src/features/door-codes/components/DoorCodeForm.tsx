@@ -63,6 +63,13 @@ export function DoorCodeForm() {
     setInputMode('type')
   }
 
+  const handleTypeMode = () => setInputMode('type')
+
+  const handleSpeakMode = () => {
+      setInputMode('speak')
+      setVoiceError(null)
+  }
+
   const serverError =
     mutation.data && !mutation.data.ok ? mutation.data.error : null
 
@@ -81,7 +88,7 @@ export function DoorCodeForm() {
       <div className='flex rounded-xl overflow-hidden border border-[#1B2838]/15 mb-1'>
         <button
           type='button'
-          onClick={() => setInputMode('type')}
+          onClick={handleTypeMode}
           className={`flex-1 h-10 text-sm font-medium transition-colors ${
             inputMode === 'type'
               ? 'bg-[#FF6B35] text-white'
@@ -92,10 +99,7 @@ export function DoorCodeForm() {
         </button>
         <button
           type='button'
-          onClick={() => {
-            setInputMode('speak')
-            setVoiceError(null)
-          }}
+          onClick={handleSpeakMode}
           className={`flex-1 h-10 text-sm font-medium transition-colors ${
             inputMode === 'speak'
               ? 'bg-[#FF6B35] text-white'
