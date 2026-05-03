@@ -92,5 +92,59 @@
     "delete": "Supprimer",
     "confirm": "Confirmer",
     "back": "Retour"
+  },
+  "Tournee": {
+    "title": "Mes tournées",
+    "subtitle": "Suivez vos tournées du jour et passées.",
+    "today": "AUJOURD'HUI",
+    "earlier": "PASSÉES",
+    "openTournee": "Ouvrir →",
+    "parcels": "{count, plural, =0 {0 colis} one {# colis} other {# colis}}",
+    "status": {
+      "pending": "En attente",
+      "in_progress": "En cours",
+      "completed": "Terminée"
+    },
+    "vehicle": {
+      "bike": "Vélo",
+      "scooter": "Scooter",
+      "car": "Voiture",
+      "van": "Camionnette",
+      "truck": "Camion"
+    },
+    "empty": {
+      "title": "Bienvenue 👋",
+      "message": "Planifiez votre première tournée pour optimiser votre journée.",
+      "cta": "Créer ma première tournée"
+    },
+    "new": {
+      "title": "Nouvelle tournée",
+      "description": "Configurez votre tournée du jour.",
+      "cta": "Nouvelle",
+      "date": "Date",
+      "vehicle": "Véhicule",
+      "parcelCount": "Nombre de colis (optionnel)",
+      "notes": "Notes (optionnel)",
+      "submit": "Démarrer la tournée",
+      "submitting": "Création...",
+      "voiceComingSoon": "Saisie vocale (bientôt)",
+      "errors": {
+        "invalid_input": "Données invalides",
+        "not_authenticated": "Vous devez être connecté",
+        "db_error": "Erreur serveur, réessayez"
+      }
+    },
+    "detail": {
+  "statusLabel": "Statut",
+  "notFound": "Tournée introuvable.",
+  "stopsTitle": "ARRÊTS",
+  "stopsPlaceholderTitle": "Plan intelligent — bientôt",
+  "stopsPlaceholderMessage": "Phase 3 : ajoutez vos arrêts, le planificateur calcule l'ordre optimal, l'ordre de chargement, et vos pauses repas.",
+  "delete": "Supprimer cette tournée",
+  "deleteConfirmTitle": "Supprimer la tournée ?",
+  "deleteConfirmMessage": "Cette action est définitive.",
+  "deleting": "Suppression..."
+}
+
   }
 }

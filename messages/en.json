@@ -92,5 +92,58 @@
     "delete": "Delete",
     "confirm": "Confirm",
     "back": "Back"
+  },
+  "Tournee": {
+    "title": "My rounds",
+    "subtitle": "Track today's and past rounds.",
+    "today": "TODAY",
+    "earlier": "EARLIER",
+    "openTournee": "Open →",
+    "parcels": "{count, plural, =0 {0 parcels} one {# parcel} other {# parcels}}",
+    "status": {
+      "pending": "Pending",
+      "in_progress": "In progress",
+      "completed": "Completed"
+    },
+    "vehicle": {
+      "bike": "Bike",
+      "scooter": "Scooter",
+      "car": "Car",
+      "van": "Van",
+      "truck": "Truck"
+    },
+    "empty": {
+      "title": "Welcome 👋",
+      "message": "Plan your first round to optimize your day.",
+      "cta": "Create my first round"
+    },
+    "new": {
+      "title": "New round",
+      "description": "Set up today's round.",
+      "cta": "New",
+      "date": "Date",
+      "vehicle": "Vehicle",
+      "parcelCount": "Parcel count (optional)",
+      "notes": "Notes (optional)",
+      "submit": "Start round",
+      "submitting": "Creating...",
+      "voiceComingSoon": "Voice entry (coming soon)",
+      "errors": {
+        "invalid_input": "Invalid input",
+        "not_authenticated": "You must be logged in",
+        "db_error": "Server error, please retry"
+      }
+    },
+    "detail": {
+      "statusLabel": "Status",
+      "notFound": "Round not found.",
+      "stopsTitle": "STOPS",
+      "stopsPlaceholderTitle": "Smart plan — coming soon",
+      "stopsPlaceholderMessage": "Phase 3: add your stops, the planner computes the optimal order, the loading order, and your meal breaks.",
+      "delete": "Delete this round",
+      "deleteConfirmTitle": "Delete this round?",
+      "deleteConfirmMessage": "This action is permanent.",
+      "deleting": "Deleting..."
+    }
   }
 }
