@@ -157,3 +157,4 @@ GitHub (PRs/issues), Context7 (library docs). See `.mcp.json`.
 - Non-deterministic ops (`Math.random`, `Date.now`, `crypto.randomUUID`) outside a cached scope or outside `<Suspense>` without `await connection()`
 - Share cache entries across users — include `userId` in cache key if user-scoped
 - Export legacy route segment config (`dynamic`, `revalidate`, `fetchCache`, `runtime`) — incompatible with `cacheComponents: true`
+- Use `as T` TypeScript casts — they silence the compiler without proof. Use Zod `.parse()` / `.safeParse()` for runtime validation, `satisfies` for compile-time shape checks, or type guards for narrowing
