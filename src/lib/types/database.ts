@@ -41,7 +41,7 @@ export type Database = {
           floor?: string | null
           id?: string
           instructions?: string | null
-          location: unknown
+          location?: unknown
           parking_hint?: string | null
           postal_code?: string | null
           updated_at?: string
@@ -63,15 +63,7 @@ export type Database = {
           updated_at?: string
           upvote_count?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "door_codes_contributed_by_fkey"
-            columns: ["contributed_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       employer_reviews: {
         Row: {
@@ -227,39 +219,64 @@ export type Database = {
           address: string
           completed_at: string | null
           created_at: string
+          door_code_id: string | null
           id: string
           location: unknown
           notes: string | null
           order_index: number
+          point_score: number | null
+          priority: number | null
           recipient_name: string | null
           status: Database["public"]["Enums"]["stop_status"]
+          time_window_end: string | null
+          time_window_start: string | null
           tournee_id: string
+          weight_kg: number | null
         }
         Insert: {
           address: string
           completed_at?: string | null
           created_at?: string
+          door_code_id?: string | null
           id?: string
           location: unknown
           notes?: string | null
           order_index: number
+          point_score?: number | null
+          priority?: number | null
           recipient_name?: string | null
           status?: Database["public"]["Enums"]["stop_status"]
+          time_window_end?: string | null
+          time_window_start?: string | null
           tournee_id: string
+          weight_kg?: number | null
         }
         Update: {
           address?: string
           completed_at?: string | null
           created_at?: string
+          door_code_id?: string | null
           id?: string
           location?: unknown
           notes?: string | null
           order_index?: number
+          point_score?: number | null
+          priority?: number | null
           recipient_name?: string | null
           status?: Database["public"]["Enums"]["stop_status"]
+          time_window_end?: string | null
+          time_window_start?: string | null
           tournee_id?: string
+          weight_kg?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "stops_door_code_id_fkey"
+            columns: ["door_code_id"]
+            isOneToOne: false
+            referencedRelation: "door_codes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "stops_tournee_id_fkey"
             columns: ["tournee_id"]
@@ -276,8 +293,11 @@ export type Database = {
           employer_id: string | null
           id: string
           name: string
+          notes: string | null
+          parcel_count: number | null
           status: Database["public"]["Enums"]["tournee_status"]
           user_id: string
+          vehicle_type: string
         }
         Insert: {
           created_at?: string
@@ -285,8 +305,11 @@ export type Database = {
           employer_id?: string | null
           id?: string
           name: string
+          notes?: string | null
+          parcel_count?: number | null
           status?: Database["public"]["Enums"]["tournee_status"]
           user_id: string
+          vehicle_type?: string
         }
         Update: {
           created_at?: string
@@ -294,8 +317,11 @@ export type Database = {
           employer_id?: string | null
           id?: string
           name?: string
+          notes?: string | null
+          parcel_count?: number | null
           status?: Database["public"]["Enums"]["tournee_status"]
           user_id?: string
+          vehicle_type?: string
         }
         Relationships: [
           {

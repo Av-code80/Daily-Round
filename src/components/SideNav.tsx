@@ -28,7 +28,7 @@ export function SideNav() {
   return (
     <TooltipProvider delayDuration={150}>
       <aside
-        className='fixed left-0 top-0 h-full w-14 bg-[#0F1722] border-r border-white/5 z-40 flex flex-col items-center py-4'
+        className='fixed left-0 top-0 h-full w-16 bg-[#0F1722] border-r border-white/5 z-40 flex flex-col items-center py-4'
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
         aria-label='Navigation'
       >

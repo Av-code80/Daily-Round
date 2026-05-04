@@ -6,7 +6,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <QueryProvider>
       <div className='min-h-screen'>
-        <SideNav />
+        <Suspense fallback={null}>
+          <SideNav />
+        </Suspense>
         <main className='ml-16 md:ml-56'>
           <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
         </main>
