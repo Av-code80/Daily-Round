@@ -16,15 +16,18 @@ export function generateStaticParams() {
 
 async function getLocaleMessages(locale: string) {
   'use cache'
-  cacheLife('max')          // messages only change on deploy
-  cacheTag(`i18n:${locale}`) 
+  cacheLife('max') // messages only change on deploy
+  cacheTag(`i18n:${locale}`)
   return getMessages({ locale })
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params
 
-  if (!routing.locales.includes(locale as 'fr' | 'en')) notFound()
+  function isLocale(value: string): value is (typeof routing.locales)[number] {
+    return (routing.locales as readonly string[]).includes(value)
+  }
+  if (!isLocale(locale)) notFound()
 
   setRequestLocale(locale)
   const messages = await getLocaleMessages(locale)
