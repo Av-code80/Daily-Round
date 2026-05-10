@@ -12,7 +12,7 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations('Tournee')
 
   return (
-    <main className='mx-auto w-full max-w-2xl space-y-6 p-4'>
+    <main className='mx-auto w-full max-w-3xl space-y-6 p-4'>
       <header className='space-y-1 pt-2'>
         <div className='flex items-center justify-between gap-3'>
           <h1 className='text-3xl font-bold tracking-tight text-[#1B2838] dark:text-foreground'>
