@@ -12,7 +12,7 @@ export default async function TourneeDetailPage({ params }: Props) {
   setRequestLocale(locale)
 
   return (
-    <main className='mx-auto w-full max-w-2xl space-y-6 p-4'>
+    <main className='mx-auto w-full max-w-3xl space-y-6 p-4'>
       <Suspense fallback={<DetailSkeleton />}>
         <TourneeDetail tourneeId={id} />
       </Suspense>
