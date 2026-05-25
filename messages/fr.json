@@ -135,16 +135,78 @@
       }
     },
     "detail": {
-  "statusLabel": "Statut",
-  "notFound": "Tournée introuvable.",
-  "stopsTitle": "ARRÊTS",
-  "stopsPlaceholderTitle": "Plan intelligent — bientôt",
-  "stopsPlaceholderMessage": "Phase 3 : ajoutez vos arrêts, le planificateur calcule l'ordre optimal, l'ordre de chargement, et vos pauses repas.",
-  "delete": "Supprimer cette tournée",
-  "deleteConfirmTitle": "Supprimer la tournée ?",
-  "deleteConfirmMessage": "Cette action est définitive.",
-  "deleting": "Suppression..."
-}
-
+      "statusLabel": "Statut",
+      "notFound": "Tournée introuvable.",
+      "stopsTitle": "ARRÊTS",
+      "stopsPlaceholderTitle": "Plan intelligent — bientôt",
+      "stopsPlaceholderMessage": "Phase 3 : ajoutez vos arrêts, le planificateur calcule l'ordre optimal, l'ordre de chargement, et vos pauses repas.",
+      "delete": "Supprimer cette tournée",
+      "deleteConfirmTitle": "Supprimer la tournée ?",
+      "deleteConfirmMessage": "Cette action est définitive.",
+      "deleting": "Suppression..."
+    },
+    "stops": {
+      "title": "Arrêts ({count})",
+      "addCta": "+ Ajouter un arrêt",
+      "reorder": "↕ Réorganiser",
+      "deliver": "Livrer",
+      "delivered": "Livré",
+      "failed": "Pas dans le plan auto",
+      "empty": {
+        "title": "Pas encore d'arrêts",
+        "message": "Ajoute tes colis du jour pour préparer ta tournée.",
+        "cta": "+ Ajouter le 1er",
+        "comingSoon": "Bientôt : voix, photo"
+      },
+      "priority": {
+        "1": "Basse",
+        "2": "Moyenne",
+        "3": "Haute"
+      },
+      "timeWindow": {
+        "flexible": "Créneau flexible"
+      },
+      "add": {
+        "title": "Ajouter un arrêt",
+        "address": "Adresse",
+        "addressHelp": "Saisis l'adresse complète",
+        "timeWindow": "Créneau (optionnel)",
+        "start": "Début",
+        "end": "Fin",
+        "priority": "Priorité",
+        "weight": "Poids (kg)",
+        "notes": "Notes",
+        "notesCounter": "{count} / 500",
+        "submit": "Ajouter l'arrêt",
+        "submitting": "Ajout...",
+        "voiceComingSoon": "🎤 Dicter (bientôt)",
+        "scanComingSoon": "📷 Scanner (bientôt)",
+        "errors": {
+          "invalid_input": "Données invalides",
+          "invalid_id": "Tournée invalide",
+          "not_authenticated": "Vous devez être connecté",
+          "not_found": "Tournée introuvable",
+          "db_error": "Erreur serveur, réessayez"
+        }
+      },
+      "reorderMode": {
+        "title": "Réorganiser",
+        "help": "Glisse ou utilise les flèches.",
+        "save": "✓ Terminé",
+        "saving": "Enregistrement...",
+        "errors": {
+          "order_mismatch": "La liste a changé, recharge la page",
+          "db_error": "Erreur serveur, réessayez"
+        }
+      },
+      "menu": {
+        "delete": "Supprimer"
+      },
+      "delete": {
+        "confirmTitle": "Supprimer cet arrêt ?",
+        "confirmMessage": "Cette action est définitive.",
+        "deleting": "Suppression..."
+      }
+    }
   }
 }

@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button'
 export async function TourneeList() {
   const session = await auth()
   if (!session?.user?.id) redirect('/auth/login')
+    const userId = session.user.id
 
   const t = await getTranslations('Tournee')
-  const tournees = await listMyTournees(session.user.id)
+  const tournees = await listMyTournees(userId)
 
   if (tournees.length === 0) {
     return (

@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { Loader2, Trash2 } from 'lucide-react'
 
-import { deleteTournee } from '../actions'
+import { deleteTournee } from '../../actions'
 import {
   Dialog,
   DialogContent,

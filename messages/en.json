@@ -144,6 +144,69 @@
       "deleteConfirmTitle": "Delete this round?",
       "deleteConfirmMessage": "This action is permanent.",
       "deleting": "Deleting..."
+    },
+    "stops": {
+      "title": "Stops ({count})",
+      "addCta": "+ Add a stop",
+      "reorder": "↕ Reorder",
+      "deliver": "Deliver",
+      "delivered": "Delivered",
+      "failed": "Not in auto plan",
+      "empty": {
+        "title": "No stops yet",
+        "message": "Add today's parcels to prepare your round.",
+        "cta": "+ Add the first one",
+        "comingSoon": "Coming soon: voice, photo"
+      },
+      "priority": {
+        "1": "Low",
+        "2": "Medium",
+        "3": "High"
+      },
+      "timeWindow": {
+        "flexible": "Flexible window"
+      },
+      "add": {
+        "title": "Add a stop",
+        "address": "Address",
+        "addressHelp": "Enter the full address",
+        "timeWindow": "Time window (optional)",
+        "start": "Start",
+        "end": "End",
+        "priority": "Priority",
+        "weight": "Weight (kg)",
+        "notes": "Notes",
+        "notesCounter": "{count} / 500",
+        "submit": "Add stop",
+        "submitting": "Adding...",
+        "voiceComingSoon": "🎤 Dictate (coming soon)",
+        "scanComingSoon": "📷 Scan (coming soon)",
+        "errors": {
+          "invalid_input": "Invalid input",
+          "invalid_id": "Invalid round",
+          "not_authenticated": "You must be logged in",
+          "not_found": "Round not found",
+          "db_error": "Server error, please retry"
+        }
+      },
+      "reorderMode": {
+        "title": "Reorder",
+        "help": "Drag or use the arrows.",
+        "save": "✓ Done",
+        "saving": "Saving...",
+        "errors": {
+          "order_mismatch": "List changed, reload the page",
+          "db_error": "Server error, please retry"
+        }
+      },
+      "menu": {
+        "delete": "Delete"
+      },
+      "delete": {
+        "confirmTitle": "Delete this stop?",
+        "confirmMessage": "This action is permanent.",
+        "deleting": "Deleting..."
+      }
     }
   }
 }

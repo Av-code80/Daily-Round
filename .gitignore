@@ -46,3 +46,6 @@ supabase/.temp/
 
 # Playwright MCP artifacts
 .playwright-mcp/
+
+# Local-only interview practice (Doctolib) — not committed
+src/__tests__/practice/

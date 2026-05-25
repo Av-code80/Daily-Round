@@ -2,12 +2,13 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { getTournee } from '../data'
-import { TourneeStatusSwitcher } from './TourneeStatusSwitcher'
+import { getTournee } from '../../data'
+import { TourneeStatusSwitcher } from '../TourneeStatusSwitcher'
 import { TourneeDeleteButton } from './TourneeDeleteButton'
-import { type VehicleType, vehicleTypeSchema } from '../schemas'
+import { type VehicleType, vehicleTypeSchema } from '../../schemas'
 
 import { Bike, Bus, Car, ChevronLeft, Truck } from 'lucide-react'
+import { TourneeStops } from './TourneeStops'
 
 const VEHICLE_ICONS = {
   bike: Bike,
@@ -18,9 +19,10 @@ const VEHICLE_ICONS = {
 } satisfies Record<VehicleType, typeof Bike>
 export async function TourneeDetail({ tourneeId }: { tourneeId: string }) {
   const session = await auth()
-  if (!session?.user?.id) redirect('/auth/login')
+  const userId = session?.user?.id
+  if (!userId) redirect('/auth/login')
 
-  const tournee = await getTournee(session.user.id, tourneeId)
+  const tournee = await getTournee(userId, tourneeId)
   const t = await getTranslations('Tournee')
 
   if (!tournee) {
@@ -87,20 +89,7 @@ export async function TourneeDetail({ tourneeId }: { tourneeId: string }) {
           </p>
         </section>
       )}
-
-      <section className='space-y-2'>
-        <h2 className='text-sm font-semibold tracking-wider text-foreground/60'>
-          📍 {t('detail.stopsTitle')}
-        </h2>
-        <div className='rounded-xl border border-dashed border-foreground/15 p-6 text-center'>
-          <p className='text-sm font-semibold'>
-            {t('detail.stopsPlaceholderTitle')}
-          </p>
-          <p className='mt-2 text-xs text-foreground/60'>
-            {t('detail.stopsPlaceholderMessage')}
-          </p>
-        </div>
-      </section>
+      <TourneeStops tournee={tournee} userId={userId} />
 
       <section className='border-t border-foreground/10 pt-4'>
         <TourneeDeleteButton tourneeId={tournee.id} />

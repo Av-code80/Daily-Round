@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { setRequestLocale } from 'next-intl/server'
-import { TourneeDetail } from '@/features/tournee/components/TourneeDetail'
+import { TourneeDetail } from '@/features/tournee/components/tourneeDetail/TourneeDetail'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>

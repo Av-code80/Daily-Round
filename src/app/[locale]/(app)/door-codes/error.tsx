@@ -12,7 +12,7 @@ export default function DoorCodesError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
-  const t = useTranslations('DoorCodes.error')
+  const t = useTranslations('DoorCodes.error.voice')
 
   useEffect(() => {
     console.error('[door-codes/error]', error)
