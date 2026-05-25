@@ -45,8 +45,12 @@ export async function listDoorCodes(params: z.infer<typeof listParamsSchema>) {
   if (search)
     query = query.or(`address.ilike.%${search}%,city.ilike.%${search}%`)
 
-  const { data } = await query
+  const { data, error } = await query
 
+  if (error) {
+    console.error('[listDoorCodes] db error', { code: error.code })
+    return []
+  }
 
-  return data as DoorCodeListItem[]
+  return (data ?? []) as DoorCodeListItem[]
 }
