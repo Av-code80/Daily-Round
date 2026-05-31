@@ -138,8 +138,6 @@
       "statusLabel": "Statut",
       "notFound": "Tournée introuvable.",
       "stopsTitle": "ARRÊTS",
-      "stopsPlaceholderTitle": "Plan intelligent — bientôt",
-      "stopsPlaceholderMessage": "Phase 3 : ajoutez vos arrêts, le planificateur calcule l'ordre optimal, l'ordre de chargement, et vos pauses repas.",
       "delete": "Supprimer cette tournée",
       "deleteConfirmTitle": "Supprimer la tournée ?",
       "deleteConfirmMessage": "Cette action est définitive.",

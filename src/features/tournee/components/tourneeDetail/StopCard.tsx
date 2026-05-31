@@ -35,6 +35,7 @@ export async function StopCard({ stop, position }: Props) {
             ) : (
               <span>⏱ {t('timeWindow.flexible')}</span>
             )}
+            {!stop.geocoded && <span>⚠ {t('failed')}</span>}
             {stop.weight_kg !== null && <span>⚖ {stop.weight_kg} kg</span>}
             {stop.priority === 3 && <span>★ {t('priority.3')}</span>}
           </p>

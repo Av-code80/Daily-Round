@@ -18,6 +18,7 @@ export type StopListItem = {
   weight_kg: number | null
   notes: string | null
   completed_at: string | null
+  geocoded: boolean
 }
 
 export type TourneeListItem = {
@@ -134,7 +135,7 @@ export async function listStops(
   const { data, error } = await supabase
     .from('stops')
     .select(
-      'id, address, order_index, status, time_window_start, time_window_end, priority, weight_kg, notes, completed_at',
+      'id, address, order_index, status, time_window_start, time_window_end, priority, weight_kg, notes, completed_at, location',
     )
     .eq('tournee_id', t.data)
     .order('order_index', { ascending: true })
@@ -148,6 +149,8 @@ export async function listStops(
     return []
   }
 
-  return data ?? []
+  return (data ?? []).map((row) => ({
+    ...row,
+    geocoded: row.location !== null,
+  }))
 }
-

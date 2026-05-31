@@ -138,8 +138,6 @@
       "statusLabel": "Status",
       "notFound": "Round not found.",
       "stopsTitle": "STOPS",
-      "stopsPlaceholderTitle": "Smart plan — coming soon",
-      "stopsPlaceholderMessage": "Phase 3: add your stops, the planner computes the optimal order, the loading order, and your meal breaks.",
       "delete": "Delete this round",
       "deleteConfirmTitle": "Delete this round?",
       "deleteConfirmMessage": "This action is permanent.",

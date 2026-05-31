@@ -12,6 +12,7 @@ import {
   type TourneeFormValues,
   type TourneeStatus,
 } from './schemas'
+import { geocodeAddress } from '@/lib/geocode'
 
 type CreateResult =
   | { ok: true; id: string }
@@ -245,6 +246,26 @@ export async function addStop(
       message: error.message,
     })
     return { ok: false, error: 'db_error' }
+  }
+
+  // Fire-and-forget geocoding. Failure leaves location = NULL,
+  // which the smart plan handler treats as "exclude from auto plan".
+  const coords = await geocodeAddress(v.address)
+  if (coords) {
+    const { error: locErr } = await supabase
+      .from('stops')
+      .update({
+        location:
+          `SRID=4326;POINT(${coords.lng} ${coords.lat})` as unknown as string,
+      })
+      .eq('id', data.id)
+    if (locErr) {
+      console.error('[addStop] geocode update error', {
+        userId,
+        tourneeId,
+        code: locErr.code,
+      })
+    }
   }
 
   updateTag(`tournee:${tourneeId}`)

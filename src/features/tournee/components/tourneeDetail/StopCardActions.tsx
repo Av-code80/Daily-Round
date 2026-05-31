@@ -4,6 +4,14 @@ import { useState, useTransition } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
 import { Check, MoreHorizontal, Trash2 } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { deleteStop, markStopDelivered } from '../../actions'
 
 type Props = {
@@ -80,59 +88,39 @@ export function StopCardActions({ stopId, isCompleted }: Props) {
           </div>
         )}
       </div>
-      {confirmOpen && (
-        <DeleteConfirmationDialog
-          handleDelete={handleDelete}
-          pending={pending}
-          setConfirmOpen={setConfirmOpen}
-        />
-      )}
+      <Dialog
+  open={confirmOpen}
+  onOpenChange={(open) => {
+    if (!pending) setConfirmOpen(open)
+  }}
+>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>{t('delete.confirmTitle')}</DialogTitle>
+      <DialogDescription>{t('delete.confirmMessage')}</DialogDescription>
+    </DialogHeader>
+    <DialogFooter className='flex gap-3 sm:gap-3'>
+      <button
+        type='button'
+        onClick={() => setConfirmOpen(false)}
+        disabled={pending}
+        className='h-12 flex-1 rounded-xl border border-foreground/15 font-medium'
+      >
+       Cancel
+      </button>
+      <button
+        type='button'
+        onClick={handleDelete}
+        disabled={pending}
+        className='h-12 flex-1 rounded-xl bg-red-600 font-semibold text-white disabled:opacity-50'
+      >
+        {pending ? t('delete.deleting') : t('menu.delete')}
+      </button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
     </div>
   )
 }
 
-export function DeleteConfirmationDialog({
-  handleDelete,
-  pending,
-  setConfirmOpen,
-}: {
-  handleDelete: () => void
-  pending: boolean
-  setConfirmOpen: (open: boolean) => void
-}) {
-  const t = useTranslations('Tournee.stops')
-  return (
-    <>
-      <div
-        role='dialog'
-        aria-modal='true'
-        className='fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center'
-      >
-        <div className='w-full max-w-md space-y-4 rounded-t-2xl bg-background p-6 sm:rounded-2xl'>
-          <h2 className='text-lg font-bold'>{t('delete.confirmTitle')}</h2>
-          <p className='text-sm text-foreground/60'>
-            {t('delete.confirmMessage')}
-          </p>
-          <div className='flex gap-3'>
-            <button
-              type='button'
-              onClick={() => setConfirmOpen(false)}
-              disabled={pending}
-              className='h-12 flex-1 rounded-xl border border-foreground/15 font-medium'
-            >
-              Cancel
-            </button>
-            <button
-              type='button'
-              onClick={handleDelete}
-              disabled={pending}
-              className='h-12 flex-1 rounded-xl bg-red-600 font-semibold text-white disabled:opacity-50'
-            >
-              {pending ? t('delete.deleting') : t('menu.delete')}
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
