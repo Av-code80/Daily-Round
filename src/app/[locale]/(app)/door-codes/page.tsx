@@ -22,7 +22,7 @@ export default async function DoorCodesPage({
   const t = await getTranslations('DoorCodes')
 
   return (
-    <main className='mx-auto w-full max-w-3xl p-4 space-y-4'>
+    <main className='mx-auto w-full max-w-3xl p-3 space-y-4'>
       <header className='space-y-1 pt-2'>
         <div className='flex items-center justify-between gap-3'>
           <h1 className='text-3xl font-bold tracking-tight text-[#1B2838] dark:text-foreground'>
