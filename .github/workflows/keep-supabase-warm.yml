@@ -18,10 +18,35 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          set -euo pipefail
-          curl -fsS \
+          set -uo pipefail
+
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "::error::SUPABASE_URL or SUPABASE_ANON_KEY secret is missing." \
+              "Set them at https://github.com/Av-code80/Daily-Round/settings/secrets/actions"
+            exit 1
+          fi
+
+          # Capture curl's exit code separately so we can distinguish a DNS
+          # failure (project paused/deleted) from a normal HTTP error.
+          http_code=$(curl -fsS \
             "${SUPABASE_URL}/rest/v1/tournees?select=id&limit=1" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             -o /dev/null \
-            -w "HTTP %{http_code}\n"
+            -w "%{http_code}") || curl_exit=$?
+
+          if [ "${curl_exit:-0}" -eq 6 ]; then
+            echo "::error::Could not resolve the Supabase host (DNS NXDOMAIN)." \
+              "The project is almost certainly PAUSED or deleted — the keep-warm" \
+              "ping cannot revive it once DNS is gone. Restore it here:" \
+              "https://supabase.com/dashboard/project/pnnzdmlseemrtfquigaf" \
+              "If the project ref changed after restore, update the SUPABASE_URL secret."
+            exit 6
+          fi
+
+          if [ "${curl_exit:-0}" -ne 0 ]; then
+            echo "::error::Supabase ping failed (curl exit ${curl_exit}, HTTP ${http_code})."
+            exit "${curl_exit}"
+          fi
+
+          echo "Supabase is warm ✅ HTTP ${http_code}"
