@@ -28,3 +28,4 @@ export default async function VerifyPage({ params }: Props) {
     </div>
   )
 }
+
