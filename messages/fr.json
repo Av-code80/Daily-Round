@@ -77,7 +77,8 @@
     "map": "Carte",
     "doorCodes": "Codes porte",
     "incidents": "Incidents",
-    "profile": "Profil"
+    "profile": "Profil",
+    "invoicing": "Facturation"
   },
   "Profile": {
     "title": "Profil",
@@ -214,7 +215,8 @@
       "draft": "Brouillon",
       "unpaid": "Impayée",
       "paid": "Payée",
-      "overdue": "En retard"
+      "overdue": "En retard",
+      "overdueDays": "Retard {days} j"
     },
     "finalise": {
       "cta": "Finaliser",
@@ -232,6 +234,36 @@
       "alreadyFinalised": "Cette facture est déjà finalisée",
       "noLines": "Ajoutez au moins une ligne avant de finaliser",
       "finaliseError": "La finalisation a échoué. Réessayez."
+    },
+    "summary": {
+      "pending": "En attente",
+      "overdue": "En retard",
+      "collected": "Encaissé ce mois",
+      "invoiceCount": "{count, plural, =0 {aucune facture} one {# facture} other {# factures}}",
+      "allCollected": "Tout est encaissé",
+      "allCollectedHint": "Aucune facture en attente ni en retard."
+    },
+    "list": {
+      "columnStatus": "Statut",
+      "columnNumber": "Numéro",
+      "columnClient": "Client",
+      "columnDue": "Échéance",
+      "columnAmount": "Montant",
+      "tabAll": "Toutes",
+      "tabDrafts": "Brouillons",
+      "tabUnpaid": "Impayées",
+      "tabPaid": "Payées",
+      "newInvoice": "Nouvelle facture",
+      "clients": "Clients",
+      "empty": "Aucune facture",
+      "emptyHint": "Facturez vos clients directs depuis vos tournées, sans ressaisie.",
+      "emptyCta": "Créer ma première facture",
+      "noResults": "Aucune facture ne correspond",
+      "noResultsHint": "Modifiez ou réinitialisez vos filtres.",
+      "resetFilters": "Réinitialiser les filtres",
+      "loadError": "Impossible de charger vos factures",
+      "loadErrorHint": "Vérifiez votre connexion, puis réessayez. Vos données ne sont pas perdues.",
+      "retry": "Réessayer"
     }
   }
 }
