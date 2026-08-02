@@ -94,8 +94,13 @@ Next 16 Cache Components model. `cacheComponents: true` in `next.config.ts` → 
 | --- | --- | --- |
 | `cacheLife(profile)` | Inside `'use cache'` | TTL expiry |
 | `revalidateTag('tag', 'max')` | Server Action / Route Handler | Stale-while-revalidate (background refresh) |
-| `updateTag('tag')` | Server Action only | Immediate expire (read-your-own-writes) |
+| `updateTag('tag')` | **Server Action only** — never in a Route Handler | Immediate expire (read-your-own-writes) |
+| `revalidateTag('tag', { expire: 0 })` | **Route Handler** | Immediate expire — the REST equivalent of `updateTag` |
 | `revalidatePath('/path')` | Server Action / Route Handler | Last resort; prefer tags |
+
+`revalidateTag('tag')` with no second argument is **deprecated** — always pass `'max'` or `{ expire: 0 }`.
+
+Because the invoicing module is REST (see below), it cannot use `updateTag`. After every write, its Route Handlers call `revalidateTag(tag, { expire: 0 })` for read-your-own-writes, and the client additionally calls TanStack `invalidateQueries`. The existing `tournees` / `door-codes` Server Actions keep `updateTag` — moving them to REST later would require this same substitution.
 
 ### Tag naming
 
@@ -138,6 +143,65 @@ async function getLocaleMessages(locale: string) {
 ```
 
 `locale` is an argument → part of the cache key → `fr` and `en` cached separately. `cacheLife('max')` since JSON only changes on deploy. Tag enables targeted invalidation if translations move to a CMS later.
+
+## Scope extension — training roadmap (from 2026-07-25)
+
+DailyRound's scope is deliberately stretched to cover three domains. All of it stays one product — no second repo.
+
+| Module | Domain | Backend |
+| --- | --- | --- |
+| `tournees`, `door-codes` | driver (existing) | Supabase |
+| `facturation` | finance — driver invoices clients (auto-entrepreneur, TVA franchise) | **NestJS + PostgreSQL + Prisma + Redis** |
+| `shop` | e-commerce ops | NestJS |
+| AI layer | streaming, structured extraction, RAG, guardrails, evals | NestJS + pgvector |
+
+### Deliberate architectural divergence
+
+The Finance module does **not** follow the "Supabase RLS = authZ, Server Actions, no API routes" rule above. It runs on a real NestJS API, because money requires transactions, `decimal` arithmetic, idempotency keys and an audit trail — none of which Supabase RLS teaches. The driver module stays on Supabase. This split is intentional; document it in the README so it reads as a decision, not as drift.
+
+### Invoicing domain rules (non-negotiable, French law)
+
+- Invoice numbering is **sequential, continuous, gapless** → generated server-side via a DB sequence inside a transaction. Never client-side.
+- Two states: `brouillon` (editable) and `finalisée` (**immutable**). A finalised invoice is never updated — corrections go through an **avoir** (credit note).
+- Mandatory mentions on every invoice: SIRET, VAT number, late-payment penalties, €40 recovery indemnity. Under the franchise regime: `TVA non applicable, art. 293 B du CGI`.
+- 10-year retention → soft delete / archive only, never hard delete.
+- Money is `decimal` in the DB and an integer-cents value object in TypeScript. **Never `float`.**
+
+### Transport — REST, not Server Actions (decided 2026-07-31)
+
+The invoicing module (and every module built after it) exposes **REST Route Handlers** under `src/app/api/{module}/`, not Server Actions. Rationale: the contract must be consumable by other clients (mobile, partners), allow per-endpoint rate limiting / versioning / documentation, and stay independent of Next.js — the same contract becomes the NestJS API later, so only the implementation moves.
+
+This supersedes the "Create API routes only when Server Actions suffice" rule above **for new modules**. The existing `tournees` and `door-codes` server actions stay as they are.
+
+```
+src/app/api/{module}/**      thin HTTP adapters: auth -> validate -> call domain -> respond
+src/features/{module}/
+  domain/    business logic — knows nothing about HTTP, Next or Supabase
+  data.ts    Supabase access, called by domain/
+  services/  client-side fetch, Zod-parsed responses
+  hooks/     TanStack Query useQuery / useMutation
+```
+
+- Server Components call `data.ts` **directly** (no HTTP hop) for the first render.
+- Everything interactive goes through REST + TanStack Query.
+- Server Actions only when a form must work without JavaScript.
+- **`auth()` must be re-checked in every route handler** — one omission is a data leak.
+- Cache invalidation is the route handler's job after a write: `revalidateTag('invoices:${userId}', { expire: 0 })` — `updateTag` is unavailable outside Server Actions.
+
+### Next 16 / React 19.2 notes (verified against `node_modules/next/dist/docs`)
+
+- Pass runtime values (`userId`) as **arguments** into `'use cache'` functions rather than reading `cookies()` inside them. The argument becomes part of the cache key, so per-user entries never leak across accounts. This is the documented alternative to `'use cache: private'`.
+- `'use cache: private'` (Next 16, **experimental**) caches in browser memory only and allows `cookies()`/`headers()`/`searchParams` inside a cached scope — but it is **not available in Route Handlers**, so it is unusable in this architecture. Do not adopt.
+- Route Handlers are uncached by default. Under `cacheComponents: true` a `GET` handler is prerendered unless it touches runtime data; calling `auth()` (which reads cookies) makes it dynamic by construction. Never add `export const dynamic = 'force-static'` — legacy segment config is incompatible with Cache Components.
+- `forwardRef` is obsolete in React 19 — `ref` is a normal prop.
+- Prefer `<Activity />` (React 19.2) over unmounting for master–detail views: the list stays mounted but hidden, preserving scroll position, filters and search input.
+- `useEffectEvent` (React 19.2) reads the latest value inside an Effect without adding it to the dependency array — useful for combobox keyboard handlers.
+- Do **not** mix `useOptimistic` / `useActionState` with TanStack Query: they belong to the Actions model. This project uses `onMutate` → rollback in `onError` → `invalidateQueries` in `onSettled`.
+- Private authenticated data must **never** be CDN-cached, even on GET.
+
+### Table and list conventions
+
+Use **TanStack Table (headless) + TanStack Virtual**. Filter, sort, pagination and active tab all live in the **URL** (`nuqs`) so a filtered view is shareable, reloadable and back-button-safe. Pagination is **cursor-based**, server-side.
 
 ## MCP Servers
 
