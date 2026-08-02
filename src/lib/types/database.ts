@@ -891,6 +891,17 @@ export type Database = {
       }
       geomfromewkt: { Args: { "": string }; Returns: unknown }
       gettransactionid: { Args: never; Returns: unknown }
+      invoice_summary: {
+        Args: { p_user_id: string }
+        Returns: {
+          collected_cents: number
+          collected_count: number
+          overdue_cents: number
+          overdue_count: number
+          pending_cents: number
+          pending_count: number
+        }[]
+      }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }

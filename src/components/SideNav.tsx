@@ -1,5 +1,5 @@
 'use client'
-import { Home, Map, Bell, User, TruckElectric, KeyRound } from 'lucide-react'
+import { Home, Map, Bell, User, TruckElectric, KeyRound, FileText } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 import {
@@ -14,6 +14,7 @@ const items = [
   { href: '/', icon: Home, key: 'tournees' },
   { href: '/map', icon: Map, key: 'map' },
   { href: '/door-codes', icon: KeyRound, key: 'doorCodes' },
+  { href: '/facturation', icon: FileText, key: 'invoicing' },
   { href: '/incidents', icon: Bell, key: 'incidents' },
 ] as const
 
