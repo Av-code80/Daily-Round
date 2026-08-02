@@ -206,5 +206,32 @@
         "deleting": "Suppression..."
       }
     }
+  },
+  "Invoicing": {
+    "title": "Facturation",
+    "subtitle": "Vos factures clients et leur suivi de paiement.",
+    "status": {
+      "draft": "Brouillon",
+      "unpaid": "Impayée",
+      "paid": "Payée",
+      "overdue": "En retard"
+    },
+    "finalise": {
+      "cta": "Finaliser",
+      "confirmTitle": "Finaliser cette facture ?",
+      "confirmNumber": "Un numéro légal définitif lui sera attribué.",
+      "canSend": "Vous pourrez l'envoyer et suivre son paiement",
+      "cannotEdit": "Vous ne pourrez plus modifier son contenu",
+      "cannotDelete": "Vous ne pourrez plus la supprimer",
+      "cancel": "Annuler",
+      "pending": "Finalisation…",
+      "blockedNoLines": "Ajoutez au moins une ligne pour pouvoir finaliser."
+    },
+    "toasts": {
+      "finalised": "Facture {number} finalisée",
+      "alreadyFinalised": "Cette facture est déjà finalisée",
+      "noLines": "Ajoutez au moins une ligne avant de finaliser",
+      "finaliseError": "La finalisation a échoué. Réessayez."
+    }
   }
 }

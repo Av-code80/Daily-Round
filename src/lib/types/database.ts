@@ -194,6 +194,223 @@ export type Database = {
           },
         ]
       }
+      invoice_clients: {
+        Row: {
+          address_line: string | null
+          city: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          payment_terms_days: number
+          postal_code: string | null
+          siret: string | null
+          updated_at: string
+          user_id: string
+          vat_number: string | null
+        }
+        Insert: {
+          address_line?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          payment_terms_days?: number
+          postal_code?: string | null
+          siret?: string | null
+          updated_at?: string
+          user_id: string
+          vat_number?: string | null
+        }
+        Update: {
+          address_line?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          payment_terms_days?: number
+          postal_code?: string | null
+          siret?: string | null
+          updated_at?: string
+          user_id?: string
+          vat_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_clients_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_lines: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          line_total: number
+          order_index: number
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          line_total: number
+          order_index: number
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          line_total?: number
+          order_index?: number
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_lines_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_sequences: {
+        Row: {
+          fiscal_year: number
+          kind: string
+          last_value: number
+          user_id: string
+        }
+        Insert: {
+          fiscal_year: number
+          kind: string
+          last_value?: number
+          user_id: string
+        }
+        Update: {
+          fiscal_year?: number
+          kind?: string
+          last_value?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_sequences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          billing_unit: Database["public"]["Enums"]["billing_unit"]
+          client_id: string
+          corrects_invoice_id: string | null
+          created_at: string
+          due_on: string | null
+          finalised_at: string | null
+          fiscal_year: number | null
+          id: string
+          issued_on: string | null
+          kind: Database["public"]["Enums"]["invoice_kind"]
+          notes: string | null
+          number: string | null
+          paid_on: string | null
+          payment_status: Database["public"]["Enums"]["invoice_payment_status"]
+          status: Database["public"]["Enums"]["invoice_status"]
+          total_excl_vat: number
+          total_incl_vat: number
+          updated_at: string
+          user_id: string
+          vat_amount: number
+          vat_regime: Database["public"]["Enums"]["vat_regime"]
+        }
+        Insert: {
+          billing_unit?: Database["public"]["Enums"]["billing_unit"]
+          client_id: string
+          corrects_invoice_id?: string | null
+          created_at?: string
+          due_on?: string | null
+          finalised_at?: string | null
+          fiscal_year?: number | null
+          id?: string
+          issued_on?: string | null
+          kind?: Database["public"]["Enums"]["invoice_kind"]
+          notes?: string | null
+          number?: string | null
+          paid_on?: string | null
+          payment_status?: Database["public"]["Enums"]["invoice_payment_status"]
+          status?: Database["public"]["Enums"]["invoice_status"]
+          total_excl_vat?: number
+          total_incl_vat?: number
+          updated_at?: string
+          user_id: string
+          vat_amount?: number
+          vat_regime?: Database["public"]["Enums"]["vat_regime"]
+        }
+        Update: {
+          billing_unit?: Database["public"]["Enums"]["billing_unit"]
+          client_id?: string
+          corrects_invoice_id?: string | null
+          created_at?: string
+          due_on?: string | null
+          finalised_at?: string | null
+          fiscal_year?: number | null
+          id?: string
+          issued_on?: string | null
+          kind?: Database["public"]["Enums"]["invoice_kind"]
+          notes?: string | null
+          number?: string | null
+          paid_on?: string | null
+          payment_status?: Database["public"]["Enums"]["invoice_payment_status"]
+          status?: Database["public"]["Enums"]["invoice_status"]
+          total_excl_vat?: number
+          total_incl_vat?: number
+          updated_at?: string
+          user_id?: string
+          vat_amount?: number
+          vat_regime?: Database["public"]["Enums"]["vat_regime"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "invoice_clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_corrects_invoice_id_fkey"
+            columns: ["corrects_invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -571,6 +788,10 @@ export type Database = {
         | { Args: { table_name: string }; Returns: string }
       enablelongtransactions: { Args: never; Returns: string }
       equals: { Args: { geom1: unknown; geom2: unknown }; Returns: boolean }
+      finalise_invoice: {
+        Args: { p_invoice_id: string; p_user_id: string }
+        Returns: string
+      }
       geometry: { Args: { "": string }; Returns: unknown }
       geometry_above: {
         Args: { geom1: unknown; geom2: unknown }
@@ -711,6 +932,8 @@ export type Database = {
       }
       postgis_version: { Args: never; Returns: string }
       postgis_wagyu_version: { Args: never; Returns: string }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
       st_3dclosestpoint: {
         Args: { geom1: unknown; geom2: unknown }
         Returns: unknown
@@ -1305,14 +1528,19 @@ export type Database = {
       }
     }
     Enums: {
+      billing_unit: "tournee" | "parcel" | "hour"
       incident_type:
         | "road_blocked"
         | "parking_issue"
         | "dog"
         | "access_problem"
         | "other"
+      invoice_kind: "invoice" | "credit_note"
+      invoice_payment_status: "unpaid" | "paid"
+      invoice_status: "draft" | "finalised"
       stop_status: "pending" | "completed" | "failed"
       tournee_status: "pending" | "in_progress" | "completed"
+      vat_regime: "franchise" | "standard"
     }
     CompositeTypes: {
       geometry_dump: {
@@ -1451,6 +1679,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      billing_unit: ["tournee", "parcel", "hour"],
       incident_type: [
         "road_blocked",
         "parking_issue",
@@ -1458,8 +1687,12 @@ export const Constants = {
         "access_problem",
         "other",
       ],
+      invoice_kind: ["invoice", "credit_note"],
+      invoice_payment_status: ["unpaid", "paid"],
+      invoice_status: ["draft", "finalised"],
       stop_status: ["pending", "completed", "failed"],
       tournee_status: ["pending", "in_progress", "completed"],
+      vat_regime: ["franchise", "standard"],
     },
   },
 } as const

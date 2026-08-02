@@ -206,5 +206,32 @@
         "deleting": "Deleting..."
       }
     }
+  },
+  "Invoicing": {
+    "title": "Invoicing",
+    "subtitle": "Your client invoices and their payment status.",
+    "status": {
+      "draft": "Draft",
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "overdue": "Overdue"
+    },
+    "finalise": {
+      "cta": "Finalise",
+      "confirmTitle": "Finalise this invoice?",
+      "confirmNumber": "A permanent legal number will be assigned to it.",
+      "canSend": "You will be able to send it and track its payment",
+      "cannotEdit": "You will no longer be able to edit its content",
+      "cannotDelete": "You will no longer be able to delete it",
+      "cancel": "Cancel",
+      "pending": "Finalising…",
+      "blockedNoLines": "Add at least one line to enable finalisation."
+    },
+    "toasts": {
+      "finalised": "Invoice {number} finalised",
+      "alreadyFinalised": "This invoice is already finalised",
+      "noLines": "Add at least one line before finalising",
+      "finaliseError": "Finalisation failed. Please try again."
+    }
   }
 }
