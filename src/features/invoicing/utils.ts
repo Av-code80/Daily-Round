@@ -95,9 +95,9 @@ export function daysOverdue(dueOn: string | null): number {
 
 /** Local calendar date as YYYY-MM-DD — never UTC, the driver's day is local. */
 function todayIso(): string {
-  const now = new Date()
-  const offsetMs = now.getTimezoneOffset() * 60_000
-  return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10)
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Paris',
+  }).format(new Date())          // en-CA donne déjà "YYYY-MM-DD"
 }
 
 // ============================================================
@@ -123,4 +123,19 @@ export function canFinalise(invoice: {
   lineCount: number
 }): boolean {
   return invoice.status === 'draft' && invoice.lineCount > 0
+}
+
+/**
+ * Applies the client's contractual floor. A round of 30 parcels against
+ * a floor of 40 is billed as 40. Returns both figures so the UI can
+ * explain the difference instead of silently changing the number.
+ */
+export function applyBillingFloor(
+  quantity: string,
+  floor: number | null,
+): { billed: number; raised: boolean } {
+  const qty = Number(quantity.trim().replace(',', '.'))
+  if (!Number.isFinite(qty) || qty <= 0) return { billed: 0, raised: false }
+  if (floor === null || qty >= floor) return { billed: qty, raised: false }
+  return { billed: floor, raised: true }
 }
