@@ -201,6 +201,7 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          min_billable_quantity: number | null
           name: string
           payment_terms_days: number
           postal_code: string | null
@@ -215,6 +216,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          min_billable_quantity?: number | null
           name: string
           payment_terms_days?: number
           postal_code?: string | null
@@ -229,6 +231,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          min_billable_quantity?: number | null
           name?: string
           payment_terms_days?: number
           postal_code?: string | null

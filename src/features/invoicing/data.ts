@@ -18,12 +18,17 @@ export type InvoiceListItem = {
   client_name: string
 }
 
+// Type ClientOption — ajoute les deux champs
 export type ClientOption = {
   id: string
   name: string
   siret: string | null
   city: string | null
+  payment_terms_days: number
+  min_billable_quantity: number | null
 }
+
+const CLIENT_COLS = 'id, name, siret, city, payment_terms_days, min_billable_quantity'
 
 // Defined here, not in the component: the data layer must not depend
 // on the UI layer. The component imports this type, never the reverse.
@@ -191,7 +196,7 @@ export async function listRecentClients(userId: string): Promise<ClientOption[]>
   const supabase = createServiceClient()
   const { data, error } = await supabase
     .from('invoice_clients')
-    .select('id, name, siret, city')
+    .select(CLIENT_COLS)
     .eq('user_id', parsed.data)
     .order('updated_at', { ascending: false })
     .limit(RECENT_LIMIT)
@@ -224,7 +229,7 @@ export async function searchClients(
   const supabase = createServiceClient()
   const { data, error } = await supabase
     .from('invoice_clients')
-    .select('id, name, siret, city')
+    .select(CLIENT_COLS)
     .eq('user_id', parsed.data)
     .or(`name.ilike.%${safe}%,siret.ilike.${safe}%`)
     .limit(SEARCH_LIMIT)
