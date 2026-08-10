@@ -49,3 +49,4 @@ supabase/migrations
 
 # Local-only interview practice — not committed
 src/__tests__/practice/
+yarn.lock
