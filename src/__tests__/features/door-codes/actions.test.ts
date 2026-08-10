@@ -17,11 +17,14 @@ vi.mock('@/lib/supabase/service', () => ({
   createServiceClient: mocks.createServiceClient,
 }))
 vi.mock('next/cache', () => ({ revalidateTag: mocks.revalidateTag }))
+// A class, not an arrow function: the module under test calls
+// `new OpenAI()`, and arrow functions have no [[Construct]] — they can
+// never be instantiated. Vitest 4 raises this instead of failing later.
 vi.mock('openai', () => ({
-  default: vi.fn().mockImplementation(() => ({
-    audio: { transcriptions: { create: mocks.transcriptionsCreate } },
-    chat: { completions: { create: mocks.completionsCreate } },
-  })),
+  default: class {
+    audio = { transcriptions: { create: mocks.transcriptionsCreate } }
+    chat = { completions: { create: mocks.completionsCreate } }
+  },
 }))
 
 const validInput = {
