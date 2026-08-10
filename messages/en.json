@@ -264,6 +264,14 @@
       "loadError": "Could not load your invoices",
       "loadErrorHint": "Check your connection and try again. Your data is safe.",
       "retry": "Try again"
+    },
+    "line": {
+      "description": "Description",
+      "quantity": "Qty",
+      "unitPrice": "Unit price",
+      "total": "Total",
+      "remove": "Remove line {index}",
+      "floorApplied": "{entered} entered → {billed} billed (this client's contractual floor)"
     }
   }
 }

@@ -264,6 +264,14 @@
       "loadError": "Impossible de charger vos factures",
       "loadErrorHint": "Vérifiez votre connexion, puis réessayez. Vos données ne sont pas perdues.",
       "retry": "Réessayer"
+    },
+    "line": {
+      "description": "Description",
+      "quantity": "Qté",
+      "unitPrice": "P.U. HT",
+      "total": "Total",
+      "remove": "Supprimer la ligne {index}",
+      "floorApplied": "{entered} saisis → {billed} facturés (minimum contractuel de ce client)"
     }
   }
 }
