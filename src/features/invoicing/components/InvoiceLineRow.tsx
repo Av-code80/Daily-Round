@@ -11,11 +11,11 @@ type Props = {
   index: number
   /** Client's contractual floor, null when the client has none. */
   floor: number | null
-  onRemove: () => void
+  onRemoveAction: () => void
   canRemove: boolean
 }
 
-export function InvoiceLineRow({ control, index, floor, onRemove, canRemove }: Props) {
+export function InvoiceLineRow({ control, index, floor, onRemoveAction, canRemove }: Props) {
   const t = useTranslations('Invoicing.line')
 
   // Scoped to THIS line: typing in line 3 re-renders line 3 only.
@@ -89,7 +89,7 @@ export function InvoiceLineRow({ control, index, floor, onRemove, canRemove }: P
 
         <button
           type='button'
-          onClick={onRemove}
+          onClick={onRemoveAction}
           disabled={!canRemove}
           aria-label={t('remove', { index: index + 1 })}
           className='mt-6 shrink-0 p-2 text-foreground/40 hover:text-destructive disabled:opacity-30'
