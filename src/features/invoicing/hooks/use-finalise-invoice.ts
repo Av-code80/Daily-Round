@@ -19,7 +19,6 @@ export function useFinaliseInvoice() {
     mutationFn: (invoiceId: string) => finaliseInvoice(invoiceId),
 
     onSuccess: (data) => {
-        console.log('data', data)
       queryClient.invalidateQueries({ queryKey: ['invoices'] })
       queryClient.invalidateQueries({ queryKey: ['invoice'] })
       toast.success(t('toasts.finalised', { number: data.number }))
