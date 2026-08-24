@@ -1,24 +1,27 @@
 import { Suspense } from 'react'
-import { setRequestLocale } from 'next-intl/server'
 import { TourneeDetail } from '@/features/tournee/components/tourneeDetail/TourneeDetail'
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
-  children: React.ReactNode
 }
 
-export default async function TourneeDetailPage({ params }: Props) {
-  const { locale, id } = await params
-  setRequestLocale(locale)
-
+// plus `async`, plus d'`await` ici : cette coquille est 100 % statique
+export default function TourneeDetailPage({ params }: Props) {
   return (
     <main className='mx-auto w-full max-w-3xl space-y-6 p-4'>
       <Suspense fallback={<DetailSkeleton />}>
-        <TourneeDetail tourneeId={id} />
+        <TourneeDetailLoader params={params} />
       </Suspense>
     </main>
   )
 }
+
+// l'await se fait ici, à l'intérieur de la frontière Suspense
+async function TourneeDetailLoader({ params }: Props) {
+  const { id } = await params
+  return <TourneeDetail tourneeId={id} />
+}
+
 
 function DetailSkeleton() {
   return (
