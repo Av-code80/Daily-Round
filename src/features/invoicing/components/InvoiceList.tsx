@@ -12,7 +12,6 @@ export async function InvoiceList() {
   const session = await auth()
   if (!session?.user?.id) redirect('/auth/login')
   const userId = session.user.id
-
   const t = await getTranslations('Invoicing.list')
 
   // Independent queries -> run them in parallel, not in a waterfall.
