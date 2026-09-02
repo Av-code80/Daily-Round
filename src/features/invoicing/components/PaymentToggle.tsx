@@ -9,7 +9,10 @@ import { setPaymentStatus } from '../services/invoice'
 import type { PaymentStatus } from '../schemas'
 
 const OPTIONS = ['unpaid', 'paid'] as const
-const LABEL: Record<PaymentStatus, string> = { unpaid: 'Impayée', paid: 'Payée' }
+const LABEL: Record<PaymentStatus, string> = {
+  unpaid: 'Impayée',
+  paid: 'Payée',
+}
 
 type Props = { invoiceId: string; status: PaymentStatus }
 
@@ -63,7 +66,7 @@ export function PaymentToggle({ invoiceId, status: initial }: Props) {
             onClick={() => pick(option)}
             className={`flex flex-1 items-center justify-center gap-2 rounded-lg border p-2 text-sm transition-colors disabled:opacity-60 ${
               active
-                ? 'border-[#FF6B35]/45 bg-[#FF6B35]/10 font-medium text-[#C4501F]'
+                ? 'border-[#FF6B35]/45 bg-[#FF6B35]/10 font-medium text-[#C4501F] disabled:cursor-not-allowed'
                 : 'border-foreground/15 text-foreground/60 hover:bg-foreground/5'
             }`}
           >

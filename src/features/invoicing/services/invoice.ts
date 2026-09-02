@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { apiClient } from '@/lib/api/client'
-import { PaymentStatus } from '../schemas'
+import { PaymentStatus, type InvoiceFormValues } from '../schemas'
 
 // The response contract, declared as a schema. If the API ever changes
 // shape, this throws at the boundary instead of leaking undefined into
@@ -14,6 +14,19 @@ const paymentResponseSchema = z.object({
   payment_status: z.enum(['paid', 'unpaid']),
   paid_on: z.string().nullable(),
 })
+
+const createInvoiceResponseSchema = z.object({
+  id: z.string().min(1),
+  status: z.literal('draft'),
+})
+
+export function createInvoice(values: InvoiceFormValues) {
+  return apiClient.post(
+    '/api/invoicing/invoices',
+    createInvoiceResponseSchema,
+    values,
+  )
+}
 
 export function finaliseInvoice(invoiceId: string) {
   return apiClient.post(

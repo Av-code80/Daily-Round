@@ -1,6 +1,6 @@
 'use client'
 
-import { useWatch, type Control } from 'react-hook-form'
+import { useWatch, type Control, type UseFormRegister } from 'react-hook-form'
 import { useTranslations } from 'next-intl'
 import { Trash2, Info } from 'lucide-react'
 import type { InvoiceFormValues } from '../schemas'
@@ -8,6 +8,7 @@ import { lineTotalCents, formatCents, applyBillingFloor } from '../utils'
 
 type Props = {
   control: Control<InvoiceFormValues>
+  register: UseFormRegister<InvoiceFormValues>
   index: number
   /** Client's contractual floor, null when the client has none. */
   floor: number | null
@@ -15,7 +16,14 @@ type Props = {
   canRemove: boolean
 }
 
-export function InvoiceLineRow({ control, index, floor, onRemoveAction, canRemove }: Props) {
+export function InvoiceLineRow({
+  control,
+  register,
+  index,
+  floor,
+  onRemoveAction,
+  canRemove,
+}: Props) {
   const t = useTranslations('Invoicing.line')
 
   // Scoped to THIS line: typing in line 3 re-renders line 3 only.
@@ -44,6 +52,7 @@ export function InvoiceLineRow({ control, index, floor, onRemoveAction, canRemov
           <input
             id={`line-${index}-description`}
             className='h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
+            {...register(`lines.${index}.description`)}
           />
         </div>
 
@@ -58,6 +67,7 @@ export function InvoiceLineRow({ control, index, floor, onRemoveAction, canRemov
             id={`line-${index}-quantity`}
             inputMode='numeric'
             className='h-12 w-full rounded-lg border border-foreground/20 px-3 font-mono text-sm'
+            {...register(`lines.${index}.quantity`)}
           />
         </div>
 
@@ -72,6 +82,7 @@ export function InvoiceLineRow({ control, index, floor, onRemoveAction, canRemov
             id={`line-${index}-price`}
             inputMode='decimal'
             className='h-12 w-full rounded-lg border border-foreground/20 px-3 font-mono text-sm'
+            {...register(`lines.${index}.unit_price`)}
           />
         </div>
 

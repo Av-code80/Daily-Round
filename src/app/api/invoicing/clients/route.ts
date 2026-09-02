@@ -49,8 +49,6 @@ export async function POST(request: Request) {
   const result = await createClient(session.userId, parsed.data.name)
   if (!result.ok) return domainError(result.error)
 
-  // updateTag is unavailable outside Server Actions; { expire: 0 } gives
-  // the same read-your-own-writes guarantee here.
   revalidateTag(`clients:${session.userId}`, { expire: 0 })
 
   return NextResponse.json(result.data, { status: 201 })

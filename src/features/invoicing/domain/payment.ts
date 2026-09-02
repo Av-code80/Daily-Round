@@ -11,24 +11,11 @@ export type PaymentUpdate = {
   paid_on: string | null
 }
 
-// Artificial latency so optimistic updates are actually visible while
-// drilling. Remove before shipping — see DRILL note in the route handler.
-const DRILL_LATENCY_MS = 1200
-
-/**
- * Flips an invoice between paid and unpaid.
- *
- * This is the ONLY field that may change once an invoice is finalised —
- * the DB trigger `guard_finalised_invoice` rejects anything else. The
- * schema also enforces `paid_on` is set exactly when the status is paid,
- * so both move together or the row is refused.
- */
 export async function setPaymentStatus(
   userId: string,
   invoiceId: string,
   next: PaymentStatus,
 ): Promise<Result<PaymentUpdate>> {
-  await new Promise((r) => setTimeout(r, DRILL_LATENCY_MS))
 
   const supabase = createServiceClient()
 

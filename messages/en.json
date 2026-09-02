@@ -235,6 +235,26 @@
       "noLines": "Add at least one line before finalising",
       "finaliseError": "Finalisation failed. Please try again."
     },
+    "form": {
+      "client": "Client",
+      "clientSearchPlaceholder": "Search for a client…",
+      "selectClient": "Select a client",
+      "vatRegime": "VAT regime",
+      "vatRegimeOptions": {
+        "franchise": "VAT exemption (art. 293 B of the CGI)",
+        "standard": "Standard VAT"
+      },
+      "billingUnit": "Billing unit",
+      "billingUnitOptions": {
+        "tournee": "Round",
+        "parcel": "Parcel",
+        "hour": "Hour"
+      },
+      "addLine": "Add a line",
+      "notes": "Notes",
+      "submit": "Create draft",
+      "submitting": "Creating…"
+    },
     "summary": {
       "pending": "Pending",
       "overdue": "Overdue",

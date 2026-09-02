@@ -37,15 +37,6 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     )
   }
 
-  // DRILL: fail one call in four so rollback is actually exercised.
-  // Remove before shipping.
-  if (Math.random() < 0.25) {
-    return NextResponse.json(
-      { error: 'Network hiccup, try again', code: 'db_error' },
-      { status: 500 },
-    )
-  }
-
   const result = await setPaymentStatus(
     session.userId,
     invoiceId.value,

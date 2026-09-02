@@ -235,6 +235,26 @@
       "noLines": "Ajoutez au moins une ligne avant de finaliser",
       "finaliseError": "La finalisation a échoué. Réessayez."
     },
+    "form": {
+      "client": "Client",
+      "clientSearchPlaceholder": "Rechercher un client…",
+      "selectClient": "Sélectionner un client",
+      "vatRegime": "Régime de TVA",
+      "vatRegimeOptions": {
+        "franchise": "Franchise en base (art. 293 B du CGI)",
+        "standard": "TVA normale"
+      },
+      "billingUnit": "Unité de facturation",
+      "billingUnitOptions": {
+        "tournee": "Tournée",
+        "parcel": "Colis",
+        "hour": "Heure"
+      },
+      "addLine": "Ajouter une ligne",
+      "notes": "Notes",
+      "submit": "Créer le brouillon",
+      "submitting": "Création…"
+    },
     "summary": {
       "pending": "En attente",
       "overdue": "En retard",
