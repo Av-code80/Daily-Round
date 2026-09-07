@@ -33,7 +33,7 @@ export async function createInvoiceDraft(
 ): Promise<Result<CreatedInvoice>> {
   const supabase = createServiceClient()
 
-  // 1. Fetch client to apply the billing floor on parcel lines.
+  // 1. Fetch client to apply the billing floor on parcel lines
   const { data: rawClient, error: clientErr } = await supabase
     .from('invoice_clients')
     .select('id, min_billable_quantity')
