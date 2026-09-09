@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { ApiError } from '@/lib/api/errors'
 import { finaliseInvoice } from '../services/invoice'
+import { useRouter } from '@/i18n/navigation'
 
 /**
  * Finalisation is NOT optimistic, on purpose: the server assigns the
@@ -14,6 +15,7 @@ import { finaliseInvoice } from '../services/invoice'
 export function useFinaliseInvoice() {
   const t = useTranslations('Invoicing')
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   return useMutation({
     mutationFn: (invoiceId: string) => finaliseInvoice(invoiceId),
@@ -22,6 +24,7 @@ export function useFinaliseInvoice() {
       queryClient.invalidateQueries({ queryKey: ['invoices'] })
       queryClient.invalidateQueries({ queryKey: ['invoice'] })
       toast.success(t('toasts.finalised', { number: data.number }))
+      router.push('/facturation')
     },
     onError: (error: Error) => {
       if (error instanceof ApiError) {

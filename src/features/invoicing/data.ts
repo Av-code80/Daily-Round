@@ -14,6 +14,8 @@ export type InvoiceListItem = {
   payment_status: PaymentStatus
   issued_on: string | null
   due_on: string | null
+  // The only date a draft has: `issued_on` is assigned at finalisation.
+  created_at: string
   total_incl_vat: number
   client_name: string
 }
@@ -66,6 +68,7 @@ const invoiceRowSchema = z.object({
   payment_status: z.enum(['unpaid', 'paid']),
   issued_on: z.string().nullable(),
   due_on: z.string().nullable(),
+  created_at: z.string(),
   total_incl_vat: z.number(),
   invoice_clients: clientEmbedSchema,
 })
@@ -85,7 +88,7 @@ const RECENT_LIMIT = 5
 const PAGE_SIZE = 25
 
 const LIST_COLS =
-  'id, number, status, payment_status, issued_on, due_on, total_incl_vat, invoice_clients(name)'
+  'id, number, status, payment_status, issued_on, due_on, created_at, total_incl_vat, invoice_clients(name)'
 
 // ============================================================
 // INVOICES — list
@@ -124,6 +127,7 @@ export async function listMyInvoices(userId: string): Promise<InvoiceListItem[]>
       payment_status: row.payment_status,
       issued_on: row.issued_on,
       due_on: row.due_on,
+      created_at: row.created_at,
       total_incl_vat: row.total_incl_vat,
       client_name: clientName(row.invoice_clients),
     }
@@ -257,7 +261,7 @@ export async function getInvoice(userId: string, invoiceId: string) {
       `id, number, kind, status, payment_status, vat_regime, billing_unit,
        issued_on, due_on, paid_on, total_excl_vat, vat_amount, total_incl_vat,
        notes, finalised_at, created_at,
-       invoice_clients(id, name, siret, vat_number, address_line, postal_code, city),
+       invoice_clients(id, name, siret, vat_number, address_line, postal_code, city, min_billable_quantity),
        invoice_lines(id, order_index, description, quantity, unit_price, line_total)`,
     )
     .eq('id', okInvoice.data)

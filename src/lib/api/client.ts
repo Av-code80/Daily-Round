@@ -37,6 +37,8 @@ export const apiClient = {
       method: 'POST',
       body: body === undefined ? undefined : JSON.stringify(body),
     }),
+  put: <T>(path: string, schema: z.ZodType<T>, body: unknown) =>
+    request(path, schema, { method: 'PUT', body: JSON.stringify(body) }),
   patch: <T>(path: string, schema: z.ZodType<T>, body: unknown) =>
     request(path, schema, { method: 'PATCH', body: JSON.stringify(body) }),
   del: <T>(path: string, schema: z.ZodType<T>) =>

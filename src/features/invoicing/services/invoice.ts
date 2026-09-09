@@ -28,6 +28,14 @@ export function createInvoice(values: InvoiceFormValues) {
   )
 }
 
+export function updateInvoice(invoiceId: string, values: InvoiceFormValues) {
+  return apiClient.put(
+    `/api/invoicing/invoices/${invoiceId}`,
+    createInvoiceResponseSchema,
+    values,
+  )
+}
+
 export function finaliseInvoice(invoiceId: string) {
   return apiClient.post(
     `/api/invoicing/invoices/${invoiceId}/finalise`,

@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   const parsed = invoiceFormSchema.safeParse(raw)
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.flatten() },
+      { error: 'Validation failed', issues: parsed.error },
       { status: 422 },
     )
   }

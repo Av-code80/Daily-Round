@@ -233,7 +233,9 @@
       "finalised": "Facture {number} finalisée",
       "alreadyFinalised": "Cette facture est déjà finalisée",
       "noLines": "Ajoutez au moins une ligne avant de finaliser",
-      "finaliseError": "La finalisation a échoué. Réessayez."
+      "finaliseError": "La finalisation a échoué. Réessayez.",
+      "saved": "Brouillon enregistré",
+      "saveError": "L'enregistrement a échoué. Réessayez."
     },
     "form": {
       "client": "Client",
@@ -253,7 +255,11 @@
       "addLine": "Ajouter une ligne",
       "notes": "Notes",
       "submit": "Créer le brouillon",
-      "submitting": "Création…"
+      "submitting": "Création…",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "editTitle": "Modifier le brouillon",
+      "editHint": "Tant que la facture n'est pas finalisée, tout reste modifiable."
     },
     "summary": {
       "pending": "En attente",
@@ -275,6 +281,7 @@
       "tabPaid": "Payées",
       "newInvoice": "Nouvelle facture",
       "clients": "Clients",
+      "createdOn": "Créé le {date}",
       "empty": "Aucune facture",
       "emptyHint": "Facturez vos clients directs depuis vos tournées, sans ressaisie.",
       "emptyCta": "Créer ma première facture",

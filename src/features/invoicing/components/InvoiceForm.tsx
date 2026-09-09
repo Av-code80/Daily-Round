@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
+import { useForm, useFieldArray, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { Plus } from 'lucide-react'
@@ -14,44 +14,73 @@ import {
 } from '../schemas'
 import { useClientSearch } from '../hooks/use-client-search'
 import { useCreateInvoice } from '../hooks/use-create-invoice'
+import { useUpdateInvoice } from '../hooks/use-update-invoice'
 import { InvoiceLineRow } from './InvoiceLineRow'
+import { FinaliseInvoiceButton } from './FinaliseInvoiceButton'
 
 const EMPTY_LINE = { description: '', quantity: '', unit_price: '' }
 
-export function InvoiceForm() {
+const BLANK_INVOICE: InvoiceFormValues = {
+  client_id: '',
+  vat_regime: 'franchise',
+  billing_unit: 'tournee',
+  notes: '',
+  lines: [EMPTY_LINE],
+}
+
+type ClientOption = {
+  id: string
+  name: string
+  min_billable_quantity: number | null
+}
+
+/** `invoiceId` switches the form from creation to editing an existing draft. */
+type Props = {
+  invoiceId?: string
+  defaultValues?: InvoiceFormValues
+  /** The draft's own client, which the async search may not have loaded yet. */
+  initialClient?: ClientOption | null
+}
+
+export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) {
   const t = useTranslations('Invoicing.form')
   const [clientTerm, setClientTerm] = useState('')
   const { options: clients } = useClientSearch(clientTerm)
   const createInvoice = useCreateInvoice()
+  const updateInvoice = useUpdateInvoice()
 
   const {
     register,
     control,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<InvoiceFormValues>({
     resolver: zodResolver(invoiceFormSchema),
-    defaultValues: {
-      client_id: '',
-      vat_regime: 'franchise',
-      billing_unit: 'tournee',
-      notes: '',
-      lines: [EMPTY_LINE],
-    },
+    defaultValues: defaultValues ?? BLANK_INVOICE,
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'lines' })
 
+  // The draft's client must always have an <option>, even before the
+  // search results land: a <select> whose value matches no option falls
+  // back to the placeholder and the form silently loses its client.
+  const options =
+    initialClient && !clients.some((c) => c.id === initialClient.id)
+      ? [initialClient, ...clients]
+      : clients
+
   // Floor comes from the selected client, not from a separate lookup —
-  // the same list we searched already carries min_billable_quantity.
-  const selectedClientId = watch('client_id')
-  const selectedClient = clients.find((c) => c.id === selectedClientId)
-  const floor = selectedClient?.min_billable_quantity ?? null
+  // the same list we render already carries min_billable_quantity.
+  const selectedClientId = useWatch({ control, name: 'client_id' })
+  const floor =
+    options.find((c) => c.id === selectedClientId)?.min_billable_quantity ?? null
 
   const onSubmit = (values: InvoiceFormValues) => {
-    createInvoice.mutate(values)
+    if (invoiceId) updateInvoice.mutate({ invoiceId, values })
+    else createInvoice.mutate(values)
   }
+
+  const isPending = createInvoice.isPending || updateInvoice.isPending
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
@@ -72,7 +101,7 @@ export function InvoiceForm() {
           className='h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
         >
           <option value=''>{t('selectClient')}</option>
-          {clients.map((c) => (
+          {options.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
             </option>
@@ -156,13 +185,27 @@ export function InvoiceForm() {
         />
       </div>
 
-      <Button
-        type='submit'
-        disabled={isSubmitting || createInvoice.isPending}
-        className='h-14 w-full bg-[#FF6B35] text-white hover:bg-[#FF6B35]/90'
-      >
-        {createInvoice.isPending ? t('submitting') : t('submit')}
-      </Button>
+      <div className='flex flex-col gap-3'>
+        <Button
+          type='submit'
+          disabled={isSubmitting || isPending}
+          className='h-14 w-full bg-[#FF6B35] text-white hover:bg-[#FF6B35]/90'
+        >
+          {invoiceId
+            ? isPending
+              ? t('saving')
+              : t('save')
+            : isPending
+              ? t('submitting')
+              : t('submit')}
+        </Button>
+
+        {/* Finalisation is only offered once the draft exists — it freezes
+            whatever is stored, not what is currently typed. */}
+        {invoiceId && (
+          <FinaliseInvoiceButton invoiceId={invoiceId} lineCount={fields.length} />
+        )}
+      </div>
     </form>
   )
 }
