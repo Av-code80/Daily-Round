@@ -261,6 +261,20 @@
       "editTitle": "Modifier le brouillon",
       "editHint": "Tant que la facture n'est pas finalisée, tout reste modifiable."
     },
+    "voice": {
+      "dictate": "Dicter des lignes",
+      "stop": "Arrêter l'enregistrement",
+      "processing": "Analyse de votre dictée…",
+      "heard": "Entendu : « {transcript} »",
+      "noLines": "Aucune prestation reconnue — réessayez en citant le service, la quantité et le prix.",
+      "missingPrices": "{count} prix à compléter avant d'enregistrer",
+      "ungroundedPrices": "{count, plural, one {# prix proposé par l'IA ne figure pas dans votre dictée : retiré par sécurité} other {# prix proposés par l'IA ne figurent pas dans votre dictée : retirés par sécurité}}",
+      "errors": {
+        "micDenied": "Micro inaccessible. Autorisez-le dans les réglages du navigateur.",
+        "transcriptionFailed": "Enregistrement incompréhensible. Parlez plus près du micro et réessayez.",
+        "generic": "L'analyse de la dictée a échoué. Réessayez."
+      }
+    },
     "summary": {
       "pending": "En attente",
       "overdue": "En retard",

@@ -12,6 +12,7 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
+    "eval": "RUN_EVALS=1 node --env-file=.env.local node_modules/vitest/vitest.mjs run src/__tests__/evals --disableConsoleIntercept",
     "db:gen-types": "npx supabase gen types typescript --project-id pnnzdmlseemrtfquigaf > src/lib/types/database.ts",
     "db:migrate": "npx supabase db push"
   },

@@ -6,6 +6,8 @@ export type DomainError =
   | 'already_finalised'
   | 'no_lines'
   | 'db_error'
+  | 'transcription_failed'
+  | 'extraction_failed'
 
 /**
  * Normalised client-side error. `code` carries the business meaning

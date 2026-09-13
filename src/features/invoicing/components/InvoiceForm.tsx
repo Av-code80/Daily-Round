@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useForm, useFieldArray, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { Plus } from 'lucide-react'
+import { Info, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   invoiceFormSchema,
@@ -15,8 +15,10 @@ import {
 import { useClientSearch } from '../hooks/use-client-search'
 import { useCreateInvoice } from '../hooks/use-create-invoice'
 import { useUpdateInvoice } from '../hooks/use-update-invoice'
+import type { VoiceLinesResponse } from '../services/invoice'
 import { InvoiceLineRow } from './InvoiceLineRow'
 import { FinaliseInvoiceButton } from './FinaliseInvoiceButton'
+import { VoiceLinesButton } from './VoiceLinesButton'
 
 const EMPTY_LINE = { description: '', quantity: '', unit_price: '' }
 
@@ -44,7 +46,9 @@ type Props = {
 
 export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) {
   const t = useTranslations('Invoicing.form')
+  const tVoice = useTranslations('Invoicing.voice')
   const [clientTerm, setClientTerm] = useState('')
+  const [voiceResult, setVoiceResult] = useState<VoiceLinesResponse | null>(null)
   const { options: clients } = useClientSearch(clientTerm)
   const createInvoice = useCreateInvoice()
   const updateInvoice = useUpdateInvoice()
@@ -53,13 +57,14 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
     register,
     control,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<InvoiceFormValues>({
     resolver: zodResolver(invoiceFormSchema),
     defaultValues: defaultValues ?? BLANK_INVOICE,
   })
 
-  const { fields, append, remove } = useFieldArray({ control, name: 'lines' })
+  const { fields, append, remove, replace } = useFieldArray({ control, name: 'lines' })
 
   // The draft's client must always have an <option>, even before the
   // search results land: a <select> whose value matches no option falls
@@ -75,6 +80,22 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
   const floor =
     options.find((c) => c.id === selectedClientId)?.min_billable_quantity ?? null
 
+  // Dictated lines are a PROPOSAL: they land in the form and nothing is
+  // saved until the driver presses Save. Fully blank rows make way for
+  // them; anything already typed is kept.
+  const handleVoiceLines = (result: VoiceLinesResponse) => {
+    setVoiceResult(result)
+    if (result.lines.length === 0) return
+
+    const typed = getValues('lines').filter(
+      (line) => line.description || line.quantity || line.unit_price,
+    )
+    replace([...typed, ...result.lines])
+  }
+
+  const missingPrices =
+    voiceResult?.lines.filter((line) => !line.unit_price).length ?? 0
+
   const onSubmit = (values: InvoiceFormValues) => {
     if (invoiceId) updateInvoice.mutate({ invoiceId, values })
     else createInvoice.mutate(values)
@@ -88,13 +109,6 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
         <label htmlFor='client-search' className='mb-1 block text-sm font-medium'>
           {t('client')}
         </label>
-        <input
-          id='client-search'
-          placeholder={t('clientSearchPlaceholder')}
-          value={clientTerm}
-          onChange={(e) => setClientTerm(e.target.value)}
-          className='mb-2 h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
-        />
         <select
           id='client_id'
           {...register('client_id')}
@@ -107,6 +121,13 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
             </option>
           ))}
         </select>
+          <input
+            id='client-search'
+            placeholder={t('clientSearchPlaceholder')}
+            value={clientTerm}
+            onChange={(e) => setClientTerm(e.target.value)}
+            className='mt-2 h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
+          />
         {errors.client_id && (
           <p className='mt-1 text-xs text-destructive'>{errors.client_id.message}</p>
         )}
@@ -148,6 +169,33 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
       </div>
 
       <div className='space-y-3'>
+        <VoiceLinesButton onLinesAction={handleVoiceLines} />
+
+        {voiceResult && (
+          <div
+            role='status'
+            className='space-y-1 rounded-lg border border-foreground/10 bg-foreground/5 p-3 text-sm'
+          >
+            <p className='text-foreground/70'>
+              {tVoice('heard', { transcript: voiceResult.transcript })}
+            </p>
+            {voiceResult.lines.length === 0 && (
+              <p className='text-foreground/60'>{tVoice('noLines')}</p>
+            )}
+            {voiceResult.ungroundedPrices > 0 && (
+              <p className='flex items-start gap-1.5 text-amber-700 dark:text-amber-500'>
+                <Info className='mt-0.5 h-3.5 w-3.5 shrink-0' aria-hidden />
+                {tVoice('ungroundedPrices', { count: voiceResult.ungroundedPrices })}
+              </p>
+            )}
+            {missingPrices > 0 && (
+              <p className='text-foreground/60'>
+                {tVoice('missingPrices', { count: missingPrices })}
+              </p>
+            )}
+          </div>
+        )}
+
         {fields.map((field, index) => (
           <InvoiceLineRow
             key={field.id}

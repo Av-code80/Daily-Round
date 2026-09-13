@@ -14,9 +14,14 @@ async function request<T>(
   schema: z.ZodType<T>,
   init: RequestInit = {},
 ): Promise<T> {
+  // FormData must keep the browser-generated multipart header, boundary
+  // included — forcing application/json would make the body unreadable.
+  const isForm = init.body instanceof FormData
   const response = await fetch(path, {
     ...init,
-    headers: { 'Content-Type': 'application/json', ...init.headers },
+    headers: isForm
+      ? init.headers
+      : { 'Content-Type': 'application/json', ...init.headers },
   })
 
   if (!response.ok) {
@@ -37,6 +42,8 @@ export const apiClient = {
       method: 'POST',
       body: body === undefined ? undefined : JSON.stringify(body),
     }),
+  postForm: <T>(path: string, schema: z.ZodType<T>, form: FormData) =>
+    request(path, schema, { method: 'POST', body: form }),
   put: <T>(path: string, schema: z.ZodType<T>, body: unknown) =>
     request(path, schema, { method: 'PUT', body: JSON.stringify(body) }),
   patch: <T>(path: string, schema: z.ZodType<T>, body: unknown) =>

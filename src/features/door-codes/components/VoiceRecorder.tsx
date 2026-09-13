@@ -1,11 +1,10 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useAudioRecorder } from '@/lib/hooks/use-audio-recorder'
 import { transcribeDoorCode } from '../actions'
 import type { DoorCodeFormValues } from '../schemas'
-
-type RecorderState = 'idle' | 'recording' | 'transcribing'
 
 type Props = {
   onTranscribed: (data: Partial<DoorCodeFormValues>) => void
@@ -14,26 +13,11 @@ type Props = {
 
 export function VoiceRecorder({ onTranscribed, onError }: Props) {
   const t = useTranslations('DoorCodes')
-  const [state, setState] = useState<RecorderState>('idle')
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-  const chunksRef = useRef<Blob[]>([])
+  const [transcribing, setTranscribing] = useState(false)
 
-  const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    const mediaRecorder = new MediaRecorder(stream)
-    mediaRecorderRef.current = mediaRecorder
-    chunksRef.current = []
-
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) chunksRef.current.push(e.data)
-    }
-
-    mediaRecorder.onstop = async () => {
-      stream.getTracks().forEach((track) => track.stop())
-      const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
-      const file = new File([blob], 'recording.webm', { type: 'audio/webm' })
-
-      setState('transcribing')
+  const recorder = useAudioRecorder({
+    onRecorded: async (file) => {
+      setTranscribing(true)
       const formData = new FormData()
       formData.append('audio', file)
 
@@ -43,16 +27,11 @@ export function VoiceRecorder({ onTranscribed, onError }: Props) {
       } else {
         onTranscribed(result.data)
       }
-      setState('idle')
-    }
+      setTranscribing(false)
+    },
+  })
 
-    mediaRecorder.start(100)
-    setState('recording')
-  }
-
-  const stopRecording = () => {
-    mediaRecorderRef.current?.stop()
-  }
+  const state = transcribing ? 'transcribing' : recorder.status
 
   return (
     <div className='flex flex-col items-center gap-4 py-6'>
@@ -61,7 +40,7 @@ export function VoiceRecorder({ onTranscribed, onError }: Props) {
           type='button'
           onClick={async () => {
             try {
-              await startRecording()
+              await recorder.start()
             } catch {
               onError('mic_denied')
             }
@@ -75,7 +54,7 @@ export function VoiceRecorder({ onTranscribed, onError }: Props) {
       {state === 'recording' && (
         <button
           type='button'
-          onClick={stopRecording}
+          onClick={recorder.stop}
           className='w-20 h-20 rounded-full bg-red-500 hover:bg-red-600 text-white text-3xl flex items-center justify-center shadow-lg shadow-red-500/30 animate-pulse transition-all active:scale-95'
         >
           ⏹

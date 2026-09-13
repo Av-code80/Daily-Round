@@ -139,3 +139,70 @@ export function applyBillingFloor(
   if (floor === null || qty >= floor) return { billed: qty, raised: false }
   return { billed: floor, raised: true }
 }
+
+// ============================================================
+// VOICE EXTRACTION — guardrails
+// ============================================================
+// An LLM turns a dictated sentence into invoice lines. Money on a legal
+// document cannot be guessed, so everything below fails SAFE: whatever
+// cannot be trusted is blanked for the driver to fill in, never kept.
+
+export const MAX_VOICE_LINES = 20
+
+const QUANTITY_FORMAT = /^\d{1,6}([.,]\d{1,2})?$/
+
+export type ExtractedLine = {
+  description: string
+  quantity: string
+  unit_price: string
+}
+
+/** Every amount written with digits in the transcript, in cents. */
+function amountsInTranscript(transcript: string): Set<number> {
+  const found = new Set<number>()
+  for (const match of transcript.matchAll(/\d+(?:[.,]\d{1,2})?/g)) {
+    const cents = parseAmountToCents(match[0])
+    if (cents !== null) found.add(cents)
+  }
+  return found
+}
+
+/**
+ * Grounding check: a price survives only if the driver actually said it.
+ * A price the model produced that appears nowhere in the transcript is a
+ * hallucination by definition — it is blanked, and counted so the UI can
+ * tell the driver which prices were withheld.
+ */
+export function sanitizeExtractedLines(
+  lines: ReadonlyArray<ExtractedLine>,
+  transcript: string,
+): { lines: ExtractedLine[]; ungroundedPrices: number } {
+  const said = amountsInTranscript(transcript)
+  let ungroundedPrices = 0
+
+  const cleaned = lines
+    .map((line) => ({
+      description: line.description.trim().slice(0, 200),
+      quantity: line.quantity.trim(),
+      unit_price: line.unit_price.trim(),
+    }))
+    .filter((line) => line.description.length >= 2)
+    .slice(0, MAX_VOICE_LINES)
+    .map((line) => {
+      const quantityOk =
+        QUANTITY_FORMAT.test(line.quantity) &&
+        Number(line.quantity.replace(',', '.')) > 0
+
+      const priceCents = parseAmountToCents(line.unit_price)
+      const grounded = priceCents !== null && said.has(priceCents)
+      if (line.unit_price !== '' && !grounded) ungroundedPrices++
+
+      return {
+        description: line.description,
+        quantity: quantityOk ? line.quantity : '',
+        unit_price: grounded ? line.unit_price : '',
+      }
+    })
+
+  return { lines: cleaned, ungroundedPrices }
+}

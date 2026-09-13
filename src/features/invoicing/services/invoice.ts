@@ -36,6 +36,26 @@ export function updateInvoice(invoiceId: string, values: InvoiceFormValues) {
   )
 }
 
+const voiceLinesResponseSchema = z.object({
+  lines: z.array(
+    z.object({
+      description: z.string(),
+      quantity: z.string(),
+      unit_price: z.string(),
+    }),
+  ),
+  transcript: z.string(),
+  ungroundedPrices: z.number().int().nonnegative(),
+})
+
+export type VoiceLinesResponse = z.infer<typeof voiceLinesResponseSchema>
+
+export function transcribeLines(audio: File) {
+  const form = new FormData()
+  form.append('audio', audio)
+  return apiClient.postForm('/api/invoicing/voice-lines', voiceLinesResponseSchema, form)
+}
+
 export function finaliseInvoice(invoiceId: string) {
   return apiClient.post(
     `/api/invoicing/invoices/${invoiceId}/finalise`,

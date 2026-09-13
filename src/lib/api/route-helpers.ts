@@ -11,6 +11,10 @@ const DOMAIN_STATUS: Record<DomainError, number> = {
   already_finalised: 409,
   no_lines: 422,
   db_error: 500,
+  // Unusable audio is the caller's input problem; a malformed or missing
+  // model answer is an upstream failure.
+  transcription_failed: 422,
+  extraction_failed: 502,
 }
 
 /**

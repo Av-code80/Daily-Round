@@ -261,6 +261,20 @@
       "editTitle": "Edit draft",
       "editHint": "Everything stays editable until the invoice is finalised."
     },
+    "voice": {
+      "dictate": "Dictate lines",
+      "stop": "Stop recording",
+      "processing": "Analysing your dictation…",
+      "heard": "Heard: \"{transcript}\"",
+      "noLines": "No billable service recognised — try again stating the service, quantity and price.",
+      "missingPrices": "{count, plural, one {# price} other {# prices}} to fill in before saving",
+      "ungroundedPrices": "{count, plural, one {# price suggested by the AI is not in your dictation: removed for safety} other {# prices suggested by the AI are not in your dictation: removed for safety}}",
+      "errors": {
+        "micDenied": "Microphone unavailable. Allow it in your browser settings.",
+        "transcriptionFailed": "Recording not understood. Speak closer to the mic and try again.",
+        "generic": "Analysing the dictation failed. Please try again."
+      }
+    },
     "summary": {
       "pending": "Pending",
       "overdue": "Overdue",
