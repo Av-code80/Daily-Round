@@ -89,7 +89,26 @@ describe('createDoorCode', () => {
 })
 
 describe('transcribeDoorCode', () => {
-  beforeEach(() => vi.clearAllMocks())
+  beforeEach(() => {
+    vi.clearAllMocks()
+    // Explicit default: without it these tests would silently rely on a
+    // session left behind by the createDoorCode block above.
+    mocks.auth.mockResolvedValue({ user: { id: 'user-1' } })
+  })
+
+  it('returns not_authenticated and never calls OpenAI without a session', async () => {
+    mocks.auth.mockResolvedValue(null)
+    const form = new FormData()
+    form.append(
+      'audio',
+      new File([new Uint8Array(5000)], 'clip.webm', { type: 'audio/webm' }),
+    )
+
+    const result = await transcribeDoorCode(form)
+    expect(result).toEqual({ error: 'not_authenticated' })
+    expect(mocks.transcriptionsCreate).not.toHaveBeenCalled()
+    expect(mocks.completionsCreate).not.toHaveBeenCalled()
+  })
 
   it('returns no_audio when FormData has no audio file', async () => {
     const form = new FormData()

@@ -106,7 +106,7 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
       <div>
-        <label htmlFor='client-search' className='mb-1 block text-sm font-medium'>
+        <label htmlFor='client_id' className='mb-1 block text-sm font-medium'>
           {t('client')}
         </label>
         <select
@@ -121,13 +121,16 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
             </option>
           ))}
         </select>
-          <input
-            id='client-search'
-            placeholder={t('clientSearchPlaceholder')}
-            value={clientTerm}
-            onChange={(e) => setClientTerm(e.target.value)}
-            className='mt-2 h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
-          />
+        <label htmlFor='client-search' className='sr-only'>
+          {t('clientSearchPlaceholder')}
+        </label>
+        <input
+          id='client-search'
+          placeholder={t('clientSearchPlaceholder')}
+          value={clientTerm}
+          onChange={(e) => setClientTerm(e.target.value)}
+          className='mt-2 h-12 w-full rounded-lg border border-foreground/20 px-3 text-sm'
+        />
         {errors.client_id && (
           <p className='mt-1 text-xs text-destructive'>{errors.client_id.message}</p>
         )}

@@ -68,7 +68,8 @@
       "errors": {
         "micDenied": "Microphone access denied.",
         "transcriptionFailed": "Couldn't transcribe audio. Try again.",
-        "extractionFailed": "Couldn't understand the recording. Try again or fill manually."
+        "extractionFailed": "Couldn't understand the recording. Try again or fill manually.",
+        "notAuthenticated": "Session expired. Sign in again to use voice input."
       }
     }
   },

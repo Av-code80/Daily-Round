@@ -85,6 +85,11 @@ export async function createDoorCode(
 export async function transcribeDoorCode(
   formData: FormData,
 ): Promise<{ data: Partial<DoorCodeFormValues> } | { error: string }> {
+  // A Server Action is a publicly callable endpoint and everything below
+  // spends OpenAI credits: authenticate before touching anything else.
+  const session = await auth()
+  if (!session?.user?.id) return { error: 'not_authenticated' }
+
   const audio = formData.get('audio')
   if (!(audio instanceof File)) return { error: 'no_audio' }
 

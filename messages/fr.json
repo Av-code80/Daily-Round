@@ -68,7 +68,8 @@
       "errors": {
         "micDenied": "Accès au microphone refusé.",
         "transcriptionFailed": "Impossible de transcrire. Réessayez.",
-        "extractionFailed": "Enregistrement incompris. Réessayez ou remplissez manuellement."
+        "extractionFailed": "Enregistrement incompris. Réessayez ou remplissez manuellement.",
+        "notAuthenticated": "Session expirée. Reconnectez-vous pour utiliser la dictée."
       }
     }
   },

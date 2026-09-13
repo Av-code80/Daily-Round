@@ -58,6 +58,7 @@ export function DoorCodeForm() {
       transcription_failed: tVoice('errors.transcriptionFailed'),
       extraction_failed: tVoice('errors.extractionFailed'),
       no_audio: tVoice('errors.transcriptionFailed'),
+      not_authenticated: tVoice('errors.notAuthenticated'),
     }
     setVoiceError(messages[errorCode] ?? tVoice('errors.transcriptionFailed'))
     setInputMode('type')
