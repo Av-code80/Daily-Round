@@ -234,6 +234,7 @@
       "finalised": "Facture {number} finalisée",
       "alreadyFinalised": "Cette facture est déjà finalisée",
       "noLines": "Ajoutez au moins une ligne avant de finaliser",
+      "missingIssuer": "Renseignez votre identité de facturation avant de finaliser.",
       "finaliseError": "La finalisation a échoué. Réessayez.",
       "saved": "Brouillon enregistré",
       "saveError": "L'enregistrement a échoué. Réessayez."
@@ -276,6 +277,39 @@
         "generic": "L'analyse de la dictée a échoué. Réessayez."
       }
     },
+    "issuer": {
+      "title": "Identité de facturation",
+      "hint": "Ces informations apparaissent sur chaque facture que vous émettez.",
+      "missingWarning": "Renseignez votre identité avant d'émettre une facture : sans raison sociale, adresse ni SIRET, le document n'est pas valable.",
+      "companyName": "Raison sociale ou nom",
+      "companyNameHint": "Tel qu'il apparaîtra sur vos factures.",
+      "siret": "SIRET",
+      "vatNumber": "Numéro de TVA",
+      "vatNumberHint": "À laisser vide en franchise en base.",
+      "addressLine": "Adresse",
+      "postalCode": "Code postal",
+      "city": "Ville",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Identité enregistrée",
+      "saveError": "L'enregistrement a échoué. Réessayez.",
+      "backToList": "Retour aux factures",
+      "errors": {
+        "companyNameTooShort": "Le nom est trop court",
+        "companyNameTooLong": "Le nom est trop long",
+        "siretFormat": "Le SIRET doit comporter exactement 14 chiffres",
+        "vatNumberFormat": "Format du numéro de TVA : FR suivi de 11 chiffres",
+        "addressRequired": "L'adresse est requise",
+        "addressTooLong": "L'adresse est trop longue",
+        "postalCodeFormat": "Le code postal doit comporter 5 chiffres",
+        "cityRequired": "La ville est requise",
+        "cityTooLong": "Le nom de ville est trop long",
+        "emailInvalid": "E-mail invalide",
+        "phoneTooLong": "Le numéro de téléphone est trop long"
+      }
+    },
     "summary": {
       "pending": "En attente",
       "overdue": "En retard",
@@ -296,6 +330,7 @@
       "tabPaid": "Payées",
       "newInvoice": "Nouvelle facture",
       "clients": "Clients",
+      "settings": "Paramètres",
       "createdOn": "Créé le {date}",
       "empty": "Aucune facture",
       "emptyHint": "Facturez vos clients directs depuis vos tournées, sans ressaisie.",

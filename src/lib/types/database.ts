@@ -250,6 +250,56 @@ export type Database = {
           },
         ]
       }
+      invoice_issuers: {
+        Row: {
+          address_line: string
+          city: string
+          company_name: string
+          created_at: string
+          email: string | null
+          phone: string | null
+          postal_code: string
+          siret: string
+          updated_at: string
+          user_id: string
+          vat_number: string | null
+        }
+        Insert: {
+          address_line: string
+          city: string
+          company_name: string
+          created_at?: string
+          email?: string | null
+          phone?: string | null
+          postal_code: string
+          siret: string
+          updated_at?: string
+          user_id: string
+          vat_number?: string | null
+        }
+        Update: {
+          address_line?: string
+          city?: string
+          company_name?: string
+          created_at?: string
+          email?: string | null
+          phone?: string | null
+          postal_code?: string
+          siret?: string
+          updated_at?: string
+          user_id?: string
+          vat_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_issuers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoice_lines: {
         Row: {
           created_at: string
@@ -323,7 +373,13 @@ export type Database = {
       invoices: {
         Row: {
           billing_unit: Database["public"]["Enums"]["billing_unit"]
+          client_address_line: string | null
+          client_city: string | null
           client_id: string
+          client_name: string | null
+          client_postal_code: string | null
+          client_siret: string | null
+          client_vat_number: string | null
           corrects_invoice_id: string | null
           created_at: string
           due_on: string | null
@@ -331,6 +387,14 @@ export type Database = {
           fiscal_year: number | null
           id: string
           issued_on: string | null
+          issuer_address_line: string | null
+          issuer_city: string | null
+          issuer_company_name: string | null
+          issuer_email: string | null
+          issuer_phone: string | null
+          issuer_postal_code: string | null
+          issuer_siret: string | null
+          issuer_vat_number: string | null
           kind: Database["public"]["Enums"]["invoice_kind"]
           notes: string | null
           number: string | null
@@ -346,7 +410,13 @@ export type Database = {
         }
         Insert: {
           billing_unit?: Database["public"]["Enums"]["billing_unit"]
+          client_address_line?: string | null
+          client_city?: string | null
           client_id: string
+          client_name?: string | null
+          client_postal_code?: string | null
+          client_siret?: string | null
+          client_vat_number?: string | null
           corrects_invoice_id?: string | null
           created_at?: string
           due_on?: string | null
@@ -354,6 +424,14 @@ export type Database = {
           fiscal_year?: number | null
           id?: string
           issued_on?: string | null
+          issuer_address_line?: string | null
+          issuer_city?: string | null
+          issuer_company_name?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          issuer_postal_code?: string | null
+          issuer_siret?: string | null
+          issuer_vat_number?: string | null
           kind?: Database["public"]["Enums"]["invoice_kind"]
           notes?: string | null
           number?: string | null
@@ -369,7 +447,13 @@ export type Database = {
         }
         Update: {
           billing_unit?: Database["public"]["Enums"]["billing_unit"]
+          client_address_line?: string | null
+          client_city?: string | null
           client_id?: string
+          client_name?: string | null
+          client_postal_code?: string | null
+          client_siret?: string | null
+          client_vat_number?: string | null
           corrects_invoice_id?: string | null
           created_at?: string
           due_on?: string | null
@@ -377,6 +461,14 @@ export type Database = {
           fiscal_year?: number | null
           id?: string
           issued_on?: string | null
+          issuer_address_line?: string | null
+          issuer_city?: string | null
+          issuer_company_name?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          issuer_postal_code?: string | null
+          issuer_siret?: string | null
+          issuer_vat_number?: string | null
           kind?: Database["public"]["Enums"]["invoice_kind"]
           notes?: string | null
           number?: string | null
@@ -758,6 +850,20 @@ export type Database = {
             }
             Returns: string
           }
+      create_invoice_draft: {
+        Args: {
+          p_billing_unit: Database["public"]["Enums"]["billing_unit"]
+          p_client_id: string
+          p_lines: Json
+          p_notes: string
+          p_user_id: string
+          p_vat_regime: Database["public"]["Enums"]["vat_regime"]
+        }
+        Returns: {
+          id: string
+          status: Database["public"]["Enums"]["invoice_status"]
+        }[]
+      }
       disablelongtransactions: { Args: never; Returns: string }
       dropgeometrycolumn:
         | {
@@ -1530,6 +1636,21 @@ export type Database = {
         Returns: unknown
       }
       unlockrows: { Args: { "": string }; Returns: number }
+      update_invoice_draft: {
+        Args: {
+          p_billing_unit: Database["public"]["Enums"]["billing_unit"]
+          p_client_id: string
+          p_invoice_id: string
+          p_lines: Json
+          p_notes: string
+          p_user_id: string
+          p_vat_regime: Database["public"]["Enums"]["vat_regime"]
+        }
+        Returns: {
+          id: string
+          status: Database["public"]["Enums"]["invoice_status"]
+        }[]
+      }
       updategeometrysrid: {
         Args: {
           catalogn_name: string
@@ -1578,12 +1699,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1607,11 +1728,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1632,11 +1753,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1657,11 +1778,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -1674,11 +1795,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }

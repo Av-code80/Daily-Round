@@ -5,6 +5,7 @@ export type DomainError =
   | 'forbidden'
   | 'already_finalised'
   | 'no_lines'
+  | 'missing_issuer'
   | 'db_error'
   | 'transcription_failed'
   | 'extraction_failed'

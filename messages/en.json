@@ -234,6 +234,7 @@
       "finalised": "Invoice {number} finalised",
       "alreadyFinalised": "This invoice is already finalised",
       "noLines": "Add at least one line before finalising",
+      "missingIssuer": "Fill in your billing identity before finalising.",
       "finaliseError": "Finalisation failed. Please try again.",
       "saved": "Draft saved",
       "saveError": "Saving failed. Please try again."
@@ -276,6 +277,39 @@
         "generic": "Analysing the dictation failed. Please try again."
       }
     },
+    "issuer": {
+      "title": "Billing identity",
+      "hint": "These details appear on every invoice you issue.",
+      "missingWarning": "Fill in your identity before issuing an invoice: without a legal name, address and SIRET the document is not valid.",
+      "companyName": "Legal or trading name",
+      "companyNameHint": "As it will appear on your invoices.",
+      "siret": "SIRET",
+      "vatNumber": "VAT number",
+      "vatNumberHint": "Leave empty under the VAT exemption scheme.",
+      "addressLine": "Address",
+      "postalCode": "Postcode",
+      "city": "City",
+      "email": "Email",
+      "phone": "Phone",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Identity saved",
+      "saveError": "Saving failed. Please try again.",
+      "backToList": "Back to invoices",
+      "errors": {
+        "companyNameTooShort": "Name is too short",
+        "companyNameTooLong": "Name is too long",
+        "siretFormat": "SIRET must be exactly 14 digits",
+        "vatNumberFormat": "VAT number format: FR followed by 11 digits",
+        "addressRequired": "Address is required",
+        "addressTooLong": "Address is too long",
+        "postalCodeFormat": "Postal code must be 5 digits",
+        "cityRequired": "City is required",
+        "cityTooLong": "City name is too long",
+        "emailInvalid": "Invalid email",
+        "phoneTooLong": "Phone number is too long"
+      }
+    },
     "summary": {
       "pending": "Pending",
       "overdue": "Overdue",
@@ -296,6 +330,7 @@
       "tabPaid": "Paid",
       "newInvoice": "New invoice",
       "clients": "Clients",
+      "settings": "Settings",
       "createdOn": "Created {date}",
       "empty": "No invoice",
       "emptyHint": "Invoice your direct clients straight from your rounds, no re-entry.",

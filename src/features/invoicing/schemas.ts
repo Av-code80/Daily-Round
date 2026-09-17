@@ -72,6 +72,52 @@ export const clientFormSchema = z.object({
 export type ClientFormValues = z.infer<typeof clientFormSchema>
 
 // ============================================================
+// ISSUER — the driver's own billing identity
+// ============================================================
+// Stricter than the client schema on purpose: a client can be created
+// from a name alone and completed later, but an invoice without the
+// issuer's name, address and SIRET is not a valid document at all.
+//
+// A function, not a static object: the messages are user-facing (shown
+// inline next to each field by IssuerForm), so they must be translated —
+// which a schema built once at module load cannot do. Both the client
+// form and the route handler build it fresh with their own translator,
+// so the validation RULES live in one place while the MESSAGES follow
+// the caller's locale.
+export function buildIssuerFormSchema(t: (key: string) => string) {
+  return z.object({
+    company_name: z
+      .string()
+      .trim()
+      .min(2, t('companyNameTooShort'))
+      .max(120, t('companyNameTooLong')),
+    siret: z
+      .string()
+      .trim()
+      .regex(/^\d{14}$/, t('siretFormat')),
+    vat_number: z
+      .string()
+      .trim()
+      .regex(/^FR\d{11}$/, t('vatNumberFormat'))
+      .or(z.literal('')),
+    address_line: z
+      .string()
+      .trim()
+      .min(5, t('addressRequired'))
+      .max(200, t('addressTooLong')),
+    postal_code: z
+      .string()
+      .trim()
+      .regex(/^\d{5}$/, t('postalCodeFormat')),
+    city: z.string().trim().min(2, t('cityRequired')).max(100, t('cityTooLong')),
+    email: z.string().trim().email(t('emailInvalid')).or(z.literal('')),
+    phone: z.string().trim().max(20, t('phoneTooLong')),
+  })
+}
+
+export type IssuerFormValues = z.infer<ReturnType<typeof buildIssuerFormSchema>>
+
+// ============================================================
 // INVOICE LINE
 // ============================================================
 export const invoiceLineSchema = z.object({

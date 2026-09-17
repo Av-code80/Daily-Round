@@ -10,6 +10,7 @@ const DOMAIN_STATUS: Record<DomainError, number> = {
   forbidden: 403,
   already_finalised: 409,
   no_lines: 422,
+  missing_issuer: 422,
   db_error: 500,
   // Unusable audio is the caller's input problem; a malformed or missing
   // model answer is an upstream failure.

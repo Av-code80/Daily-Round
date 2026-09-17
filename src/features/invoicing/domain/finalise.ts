@@ -28,7 +28,6 @@ export async function finaliseInvoice(
     p_invoice_id: invoiceId,
     p_user_id: userId,
   })
-  console.log('[finalise] rpc →', { data, error })
   if (error) {
     // Postgres RAISE EXCEPTION messages are mapped to domain errors here,
     // so the HTTP layer never has to read database internals.
@@ -45,6 +44,9 @@ export async function finaliseInvoice(
     }
     if (message.includes('without lines')) {
       return { ok: false, error: 'no_lines' }
+    }
+    if (message.includes('issuer identity missing')) {
+      return { ok: false, error: 'missing_issuer' }
     }
 
     console.error('[finaliseInvoice] rpc error', {

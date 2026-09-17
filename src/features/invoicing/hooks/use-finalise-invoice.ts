@@ -35,6 +35,10 @@ export function useFinaliseInvoice() {
         if (error.code === 'no_lines') {
           return toast.error(t('toasts.noLines'))
         }
+        if (error.code === 'missing_issuer') {
+          toast.error(t('toasts.missingIssuer'))
+          return router.push('/facturation/parametres')
+        }
       }
       toast.error(t('toasts.finaliseError'))
     },

@@ -246,6 +246,49 @@ export async function searchClients(
 }
 
 // ============================================================
+// ISSUER — one row per driver
+// ============================================================
+
+export type Issuer = {
+  company_name: string
+  siret: string
+  vat_number: string | null
+  address_line: string
+  postal_code: string
+  city: string
+  email: string | null
+  phone: string | null
+}
+
+const ISSUER_COLS =
+  'company_name, siret, vat_number, address_line, postal_code, city, email, phone'
+
+export async function getIssuer(userId: string): Promise<Issuer | null> {
+  'use cache'
+  // Changes once a year at most, and every write revalidates the tag.
+  cacheLife('hours')
+  cacheTag(`issuer:${userId}`)
+
+  const parsed = userIdSchema.safeParse(userId)
+  if (!parsed.success) return null
+
+  const supabase = createServiceClient()
+  const { data, error } = await supabase
+    .from('invoice_issuers')
+    .select(ISSUER_COLS)
+    .eq('user_id', parsed.data)
+    // Absence is the normal state until the driver fills the form, so
+    // it must not read as an error.
+    .maybeSingle()
+
+  if (error) {
+    console.error('[getIssuer] db error', { code: error.code })
+    return null
+  }
+  return data
+}
+
+// ============================================================
 // INVOICE — detail with its lines
 // ============================================================
 

@@ -20,6 +20,11 @@ export default async function InvoicingPage({ params }: Props) {
             {t('title')}
           </h1>
           <div className='flex gap-2'>
+            <Link href='/facturation/parametres'>
+              <Button variant='outline' className='h-11'>
+                {t('list.settings')}
+              </Button>
+            </Link>
             <Link href='/facturation/clients'>
               <Button variant='outline' className='h-11'>
                 {t('list.clients')}
