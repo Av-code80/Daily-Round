@@ -7,10 +7,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <QueryProvider>
       <div className='min-h-screen'>
-        <Suspense fallback={null}>
-          <SideNav />
-        </Suspense>
-        <main className='ml-16 md:ml-56'>
+        <div className='print:hidden'>
+          <Suspense fallback={null}>
+            <SideNav />
+          </Suspense>
+        </div>
+        <main className='ml-16 md:ml-56 print:ml-0'>
           <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
           <Toaster richColors position='top-center' />
         </main>

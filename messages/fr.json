@@ -338,6 +338,7 @@
       "noResults": "Aucune facture ne correspond",
       "noResultsHint": "Modifiez ou réinitialisez vos filtres.",
       "resetFilters": "Réinitialiser les filtres",
+      "backToList": "Retour aux factures",
       "loadError": "Impossible de charger vos factures",
       "loadErrorHint": "Vérifiez votre connexion, puis réessayez. Vos données ne sont pas perdues.",
       "retry": "Réessayer"
@@ -349,6 +350,23 @@
       "total": "Total",
       "remove": "Supprimer la ligne {index}",
       "floorApplied": "{entered} saisis → {billed} facturés (minimum contractuel de ce client)"
+    },
+    "document": {
+      "title": "Facture",
+      "siret": "SIRET",
+      "issuedOn": "Émise le {date}",
+      "dueOn": "Échéance le {date}",
+      "billedTo": "Facturé à",
+      "lineTotal": "Total HT",
+      "totalExclVat": "Total HT",
+      "vat": "TVA",
+      "vatNotApplicable": "Non applicable",
+      "totalInclVat": "Total TTC",
+      "issuerUnknown": "Identité de l'émetteur non renseignée à l'émission.",
+      "legacyNoIssuer": "Facture émise avant la gestion de l'identité de facturation. L'émetteur ne peut plus être renseigné rétroactivement.",
+      "franchiseMention": "TVA non applicable, art. 293 B du CGI",
+      "latePaymentMention": "En cas de retard de paiement, pénalités au taux de 3 fois le taux d'intérêt légal, et indemnité forfaitaire de 40 € pour frais de recouvrement.",
+      "print": "Imprimer / PDF"
     }
   }
 }

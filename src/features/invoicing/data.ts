@@ -304,6 +304,10 @@ export async function getInvoice(userId: string, invoiceId: string) {
       `id, number, kind, status, payment_status, vat_regime, billing_unit,
        issued_on, due_on, paid_on, total_excl_vat, vat_amount, total_incl_vat,
        notes, finalised_at, created_at,
+       client_name, client_siret, client_vat_number, client_address_line,
+       client_postal_code, client_city,
+       issuer_company_name, issuer_siret, issuer_vat_number, issuer_address_line,
+       issuer_postal_code, issuer_city, issuer_email, issuer_phone,
        invoice_clients(id, name, siret, vat_number, address_line, postal_code, city, min_billable_quantity),
        invoice_lines(id, order_index, description, quantity, unit_price, line_total)`,
     )

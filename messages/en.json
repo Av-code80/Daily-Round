@@ -338,6 +338,7 @@
       "noResults": "No invoice matches",
       "noResultsHint": "Change or reset your filters.",
       "resetFilters": "Reset filters",
+      "backToList": "Back to invoices",
       "loadError": "Could not load your invoices",
       "loadErrorHint": "Check your connection and try again. Your data is safe.",
       "retry": "Try again"
@@ -349,6 +350,23 @@
       "total": "Total",
       "remove": "Remove line {index}",
       "floorApplied": "{entered} entered → {billed} billed (this client's contractual floor)"
+    },
+    "document": {
+      "title": "Invoice",
+      "siret": "SIRET",
+      "issuedOn": "Issued on {date}",
+      "dueOn": "Due on {date}",
+      "billedTo": "Billed to",
+      "lineTotal": "Total excl. VAT",
+      "totalExclVat": "Total excl. VAT",
+      "vat": "VAT",
+      "vatNotApplicable": "Not applicable",
+      "totalInclVat": "Total incl. VAT",
+      "issuerUnknown": "Issuer identity was not on file at emission.",
+      "legacyNoIssuer": "This invoice was issued before billing identity was tracked. The issuer cannot be filled in retroactively.",
+      "franchiseMention": "VAT not applicable, art. 293 B of the French tax code",
+      "latePaymentMention": "Late payment triggers penalties at 3 times the legal interest rate, plus a flat €40 recovery fee.",
+      "print": "Print / PDF"
     }
   }
 }

@@ -11,6 +11,12 @@ import {
 import { InvoiceStatusPill } from './InvoiceStatusPill'
 import { PaymentToggle } from './PaymentToggle'
 
+// PaymentToggle is a client component with its own buttons: nesting it
+// inside the row's <Link> would put interactive elements inside an
+// interactive element (invalid HTML, and a click would both toggle
+// payment and navigate). It is rendered as a sibling below the link
+// instead.
+
 const ICON = {
   draft: { Icon: FileText, tone: 'bg-foreground/5 text-foreground/60' },
   unpaid: { Icon: Send, tone: 'bg-[#FF6B35]/10 text-[#FF6B35]' },
@@ -54,17 +60,6 @@ function InvoiceRowBody({
           <span className='mx-1.5'>·</span>
           {formatCents(dbAmountToCents(invoice.total_incl_vat))}
         </p>
-
-        {/* A draft has no payment: the DB refuses it (constraint
-            invoices_payment_requires_finalised), so we never offer it */}
-        {invoice.status === 'finalised' && (
-          <div className='mt-3 max-w-[220px]'>
-            <PaymentToggle
-              invoiceId={invoice.id}
-              status={invoice.payment_status}
-            />
-          </div>
-        )}
       </div>
     </div>
   )
@@ -90,27 +85,30 @@ export async function InvoiceRow({ invoice }: { invoice: InvoiceListItem }) {
       }),
     })
 
+  // A draft is still being written, so it opens the editor. A finalised
+  // invoice is a frozen document, so it opens the read-only view.
+  const href =
+    status === 'draft'
+      ? `/facturation/${invoice.id}/editer`
+      : `/facturation/${invoice.id}`
+
   return (
     <div className='rounded-xl border border-foreground/10 bg-background p-4 transition-colors hover:bg-foreground/5'>
-      {status === 'draft' ? (
-        <Link
-          href={`/facturation/${invoice.id}/editer`}
-          aria-label={`${invoice.client_name} — ${reference}`}
-        >
-          <InvoiceRowBody
-            invoice={invoice}
-            status={status}
-            late={late}
-            reference={reference}
-          />
-        </Link>
-      ) : (
+      <Link href={href} aria-label={`${invoice.client_name} — ${reference}`}>
         <InvoiceRowBody
           invoice={invoice}
           status={status}
           late={late}
           reference={reference}
         />
+      </Link>
+
+      {/* A draft has no payment: the DB refuses it (constraint
+          invoices_payment_requires_finalised), so we never offer it */}
+      {invoice.status === 'finalised' && (
+        <div className='mt-3 max-w-[220px]'>
+          <PaymentToggle invoiceId={invoice.id} status={invoice.payment_status} />
+        </div>
       )}
     </div>
   )
