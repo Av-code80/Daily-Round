@@ -292,35 +292,85 @@ export async function getIssuer(userId: string): Promise<Issuer | null> {
 // INVOICE — detail with its lines
 // ============================================================
 
-export async function getInvoice(userId: string, invoiceId: string) {
+const INVOICE_DETAIL_COLS = `id, number, kind, status, payment_status, vat_regime, billing_unit,
+   issued_on, due_on, paid_on, total_excl_vat, vat_amount, total_incl_vat,
+   notes, finalised_at, created_at,
+   client_name, client_siret, client_vat_number, client_address_line,
+   client_postal_code, client_city,
+   issuer_company_name, issuer_siret, issuer_vat_number, issuer_address_line,
+   issuer_postal_code, issuer_city, issuer_email, issuer_phone,
+   invoice_clients(id, name, siret, vat_number, address_line, postal_code, city, min_billable_quantity),
+   invoice_lines(id, order_index, description, quantity, unit_price, line_total)`
+
+// Split out so its inferred return type can be reused below: the column
+// list stays the single source of truth, with no hand-written row type
+// to keep in sync with the select.
+async function fetchInvoiceRow(userId: string, invoiceId: string) {
+  const supabase = createServiceClient()
+  const { data, error } = await supabase
+    .from('invoices')
+    .select(INVOICE_DETAIL_COLS)
+    .eq('id', invoiceId)
+    .eq('user_id', userId) // without this, knowing a UUID would leak the invoice
+    .single()
+
+  if (error) {
+    console.error('[getInvoice] db error', { invoiceId, code: error.code })
+    return null
+  }
+  return data
+}
+
+// Mirrors the DB constraint `invoices_number_iff_finalised`: a draft has
+// no number and no dates, a finalised invoice has all four. The generated
+// Supabase types describe COLUMNS, so they type all of them as nullable —
+// they cannot express a check constraint. Restating it as a discriminated
+// union makes the compiler enforce what the database already enforces:
+// `invoice.number` does not compile until `status` has been narrowed.
+const legalStateSchema = z.discriminatedUnion('status', [
+  z.object({
+    status: z.literal('draft'),
+    number: z.null(),
+    issued_on: z.null(),
+    due_on: z.null(),
+    finalised_at: z.null(),
+  }),
+  z.object({
+    status: z.literal('finalised'),
+    number: z.string(),
+    issued_on: z.string(),
+    due_on: z.string(),
+    finalised_at: z.string(),
+  }),
+])
+
+type LegalState = z.infer<typeof legalStateSchema>
+type InvoiceDetailRow = NonNullable<Awaited<ReturnType<typeof fetchInvoiceRow>>>
+
+export type InvoiceDetail = Omit<InvoiceDetailRow, keyof LegalState> & LegalState
+
+export async function getInvoice(
+  userId: string,
+  invoiceId: string,
+): Promise<InvoiceDetail | null> {
   const okUser = userIdSchema.safeParse(userId)
   const okInvoice = invoiceIdSchema.safeParse(invoiceId)
   if (!okUser.success || !okInvoice.success) return null
 
-  const supabase = createServiceClient()
-  const { data, error } = await supabase
-    .from('invoices')
-    .select(
-      `id, number, kind, status, payment_status, vat_regime, billing_unit,
-       issued_on, due_on, paid_on, total_excl_vat, vat_amount, total_incl_vat,
-       notes, finalised_at, created_at,
-       client_name, client_siret, client_vat_number, client_address_line,
-       client_postal_code, client_city,
-       issuer_company_name, issuer_siret, issuer_vat_number, issuer_address_line,
-       issuer_postal_code, issuer_city, issuer_email, issuer_phone,
-       invoice_clients(id, name, siret, vat_number, address_line, postal_code, city, min_billable_quantity),
-       invoice_lines(id, order_index, description, quantity, unit_price, line_total)`,
-    )
-    .eq('id', okInvoice.data)
-    .eq('user_id', okUser.data) // without this, knowing a UUID would leak the invoice
-    .single()
+  const row = await fetchInvoiceRow(okUser.data, okInvoice.data)
+  if (!row) return null
 
-  if (error) {
-    console.error('[getInvoice] db error', {
+  const legal = legalStateSchema.safeParse(row)
+  if (!legal.success) {
+    // Unreachable while the check constraint stands: a row that is
+    // neither a clean draft nor a complete finalised document. Treated
+    // as not found rather than rendered half-broken.
+    console.error('[getInvoice] inconsistent legal state', {
       invoiceId: okInvoice.data,
-      code: error.code,
     })
     return null
   }
-  return data
+
+  // Spread order matters: the narrowed five overwrite the nullable ones.
+  return { ...row, ...legal.data }
 }
