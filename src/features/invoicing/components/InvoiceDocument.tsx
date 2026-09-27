@@ -75,7 +75,9 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
       timeZone: 'Europe/Paris',
     })
 
-  const lines = [...invoice.invoice_lines].sort((a, b) => a.order_index - b.order_index)
+  const lines = [...invoice.invoice_lines].sort(
+    (a, b) => a.order_index - b.order_index,
+  )
   const hasIssuerSnapshot = invoice.issuer_company_name !== null
 
   return (
@@ -106,7 +108,9 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
               </p>
             </>
           ) : (
-            <p className='italic text-foreground/50'>{t('document.issuerUnknown')}</p>
+            <p className='italic text-foreground/50'>
+              {t('document.issuerUnknown')}
+            </p>
           )}
         </div>
 
@@ -125,7 +129,9 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
       </div>
 
       <div className='mt-6 max-w-xs rounded-lg border border-foreground/10 bg-foreground/5 p-4'>
-        <p className='mb-1 text-xs text-foreground/60'>{t('document.billedTo')}</p>
+        <p className='mb-1 text-xs text-foreground/60'>
+          {t('document.billedTo')}
+        </p>
         <p className='text-[15px] font-medium text-[#1B2838] dark:text-foreground'>
           {invoice.client_name}
         </p>
@@ -148,14 +154,23 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
         <thead>
           <tr className='border-b border-foreground/20 text-left text-foreground/60'>
             <th className='py-2 font-medium'>{t('line.description')}</th>
-            <th className='w-[70px] py-2 text-right font-medium'>{t('line.quantity')}</th>
-            <th className='w-[110px] py-2 text-right font-medium'>{t('line.unitPrice')}</th>
-            <th className='w-[120px] py-2 text-right font-medium'>{t('document.lineTotal')}</th>
+            <th className='w-[70px] py-2 text-right font-medium'>
+              {t('line.quantity')}
+            </th>
+            <th className='w-[110px] py-2 text-right font-medium'>
+              {t('line.unitPrice')}
+            </th>
+            <th className='w-[120px] py-2 text-right font-medium'>
+              {t('document.lineTotal')}
+            </th>
           </tr>
         </thead>
         <tbody>
           {lines.map((line) => (
-            <tr key={line.order_index} className='border-b border-foreground/10'>
+            <tr
+              key={line.order_index}
+              className='border-b border-foreground/10'
+            >
               <td className='py-2.5 text-[#1B2838] dark:text-foreground'>
                 {line.description}
               </td>
@@ -176,7 +191,9 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
       <div className='mt-4 flex justify-end'>
         <div className='min-w-[260px] text-sm'>
           <div className='flex justify-between py-1.5'>
-            <span className='text-foreground/70'>{t('document.totalExclVat')}</span>
+            <span className='text-foreground/70'>
+              {t('document.totalExclVat')}
+            </span>
             <span className='font-mono text-[#1B2838] dark:text-foreground'>
               {cents(invoice.total_excl_vat)}
             </span>
