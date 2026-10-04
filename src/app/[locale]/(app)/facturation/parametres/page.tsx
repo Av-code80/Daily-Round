@@ -14,7 +14,6 @@ export default function IssuerSettingsPage({ params }: { params: Params }) {
       <Suspense fallback={<HeaderSkeleton />}>
         <SettingsHeader params={params} />
       </Suspense>
-
       <Suspense fallback={<FormSkeleton />}>
         <SettingsSlot params={params} />
       </Suspense>
