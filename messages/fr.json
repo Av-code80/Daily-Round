@@ -354,6 +354,7 @@
     "document": {
       "title": "Facture",
       "siret": "SIRET",
+      "siren": "SIREN",
       "issuedOn": "Émise le {date}",
       "dueOn": "Échéance le {date}",
       "billedTo": "Facturé à",

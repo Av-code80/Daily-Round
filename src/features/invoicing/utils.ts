@@ -206,3 +206,25 @@ export function sanitizeExtractedLines(
 
   return { lines: cleaned, ungroundedPrices }
 }
+// ============================================================
+// LEGAL IDENTIFIERS
+// ============================================================
+
+/**
+ * A SIRET is a SIREN (9 digits, the company) followed by a NIC (5 digits,
+ * the establishment). The 2026 e-invoicing reform makes the SIREN a
+ * mandatory mention: the central directory routes invoices on it, and a
+ * missing one gets the document rejected rather than merely fined.
+ *
+ * Returns null on anything that is not exactly 14 digits — slicing a
+ * malformed SIRET would print a plausible-looking but wrong identifier
+ * on a legal document, which is worse than printing nothing.
+ */
+export function sirenFromSiret(siret: string | null): string | null {
+  if (siret === null) return null
+
+  const digits = siret.replace(/\s/g, '')
+  if (!/^\d{14}$/.test(digits)) return null
+
+  return digits.slice(0, 9)
+}

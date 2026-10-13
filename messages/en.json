@@ -354,6 +354,7 @@
     "document": {
       "title": "Invoice",
       "siret": "SIRET",
+      "siren": "SIREN",
       "issuedOn": "Issued on {date}",
       "dueOn": "Due on {date}",
       "billedTo": "Billed to",

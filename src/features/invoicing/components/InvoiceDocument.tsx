@@ -5,7 +5,7 @@ import { getTranslations, getFormatter } from 'next-intl/server'
 import { AlertTriangle } from 'lucide-react'
 import { z } from 'zod'
 import { getInvoice } from '../data'
-import { dbAmountToCents, formatCents } from '../utils'
+import { dbAmountToCents, formatCents, sirenFromSiret } from '../utils'
 
 // A finalised invoice reads ONLY its own frozen columns — never
 // invoice_clients or invoice_issuers. Those live rows can legitimately
@@ -80,6 +80,12 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
   )
   const hasIssuerSnapshot = invoice.issuer_company_name !== null
 
+  // Mandatory mention from 1 September 2026: the central directory routes
+  // invoices on the SIREN, so it is spelled out rather than left implicit
+  // inside the SIRET.
+  const issuerSiren = sirenFromSiret(invoice.issuer_siret)
+  const clientSiren = sirenFromSiret(invoice.client_siret)
+
   return (
     <div className='rounded-xl border border-foreground/10 bg-background p-7 print:border-none print:p-0'>
       {!hasIssuerSnapshot && (
@@ -106,6 +112,11 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
               <p className='mt-1 font-mono text-xs'>
                 {t('document.siret')} {invoice.issuer_siret}
               </p>
+              {issuerSiren && (
+                <p className='font-mono text-xs'>
+                  {t('document.siren')} {issuerSiren}
+                </p>
+              )}
             </>
           ) : (
             <p className='italic text-foreground/50'>
@@ -145,6 +156,11 @@ export async function InvoiceDocument({ invoiceId, locale }: Props) {
           {invoice.client_siret && (
             <p className='mt-1 font-mono text-xs'>
               {t('document.siret')} {invoice.client_siret}
+            </p>
+          )}
+          {clientSiren && (
+            <p className='font-mono text-xs'>
+              {t('document.siren')} {clientSiren}
             </p>
           )}
         </div>
