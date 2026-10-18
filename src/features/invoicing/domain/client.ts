@@ -1,5 +1,6 @@
 import 'server-only'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import type { DomainError } from '@/lib/api/errors'
 import type { ClientOption } from '../data'
 
@@ -25,7 +26,7 @@ export async function createClient(
     .single()
 
   if (error) {
-    console.error('[createClient] db error', { userId, code: error.code })
+    logDbError('[createClient] db error', error, { userId })
     return { ok: false, error: 'db_error' }
   }
 

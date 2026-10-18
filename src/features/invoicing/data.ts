@@ -1,6 +1,7 @@
 import { cacheLife, cacheTag } from 'next/cache'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import type { InvoiceStatus, PaymentStatus } from './schemas'
 
 // ============================================================
@@ -111,10 +112,7 @@ export async function listMyInvoices(userId: string): Promise<InvoiceListItem[]>
     .limit(PAGE_SIZE)
 
   if (error) {
-    console.error('[listMyInvoices] db error', {
-      userId: parsed.data,
-      code: error.code,
-    })
+    logDbError('[listMyInvoices] db error', error, { userId: parsed.data })
     return []
   }
 
@@ -168,7 +166,7 @@ export async function getInvoiceSummary(userId: string): Promise<InvoiceSummary>
   const row = data?.[0]
 
   if (error || !row) {
-    console.error('[getInvoiceSummary] rpc error', { code: error?.code })
+    logDbError('[getInvoiceSummary] rpc error', error)
     return EMPTY_SUMMARY
   }
 
@@ -206,7 +204,7 @@ export async function listRecentClients(userId: string): Promise<ClientOption[]>
     .limit(RECENT_LIMIT)
 
   if (error) {
-    console.error('[listRecentClients] db error', { code: error.code })
+    logDbError('[listRecentClients] db error', error)
     return []
   }
   return data ?? []
@@ -239,7 +237,7 @@ export async function searchClients(
     .limit(SEARCH_LIMIT)
 
   if (error) {
-    console.error('[searchClients] db error', { code: error.code })
+    logDbError('[searchClients] db error', error)
     return []
   }
   return data ?? []
@@ -282,7 +280,7 @@ export async function getIssuer(userId: string): Promise<Issuer | null> {
     .maybeSingle()
 
   if (error) {
-    console.error('[getIssuer] db error', { code: error.code })
+    logDbError('[getIssuer] db error', error)
     return null
   }
   return data
@@ -315,7 +313,7 @@ async function fetchInvoiceRow(userId: string, invoiceId: string) {
     .single()
 
   if (error) {
-    console.error('[getInvoice] db error', { invoiceId, code: error.code })
+    logDbError('[getInvoice] db error', error, { invoiceId })
     return null
   }
   return data

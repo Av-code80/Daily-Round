@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { updateTag } from 'next/cache'
 import { auth } from '@/lib/auth'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import {
   stopFormSchema,
   tourneeFormSchema,
@@ -60,11 +61,7 @@ export async function createTournee(
     .single()
 
   if (error) {
-    console.error('[createTournee] db error', {
-      userId,
-      code: error.code,
-      message: error.message,
-    })
+    logDbError('[createTournee] db error', error, { userId })
     return { ok: false, error: 'db_error' }
   }
 
@@ -98,11 +95,7 @@ export async function updateTourneeStatus(
     .eq('user_id', userId) // defense-in-depth: scope writes to the owner
 
   if (error) {
-    console.error('[updateTourneeStatus] db error', {
-      userId,
-      tourneeId,
-      code: error.code,
-    })
+    logDbError('[updateTourneeStatus] db error', error, { userId, tourneeId })
     return { ok: false, error: 'db_error' }
   }
 
@@ -131,11 +124,7 @@ export async function deleteTournee(tourneeId: string): Promise<SimpleResult> {
     .eq('user_id', userId)
 
   if (error) {
-    console.error('[deleteTournee] db error', {
-      userId,
-      tourneeId,
-      code: error.code,
-    })
+    logDbError('[deleteTournee] db error', error, { userId, tourneeId })
     return { ok: false, error: 'db_error' }
   }
 
@@ -239,12 +228,7 @@ export async function addStop(
     .single()
 
   if (error) {
-    console.error('[addStop] db error', {
-      userId,
-      tourneeId,
-      code: error.code,
-      message: error.message,
-    })
+    logDbError('[addStop] db error', error, { userId, tourneeId })
     return { ok: false, error: 'db_error' }
   }
 
@@ -260,11 +244,7 @@ export async function addStop(
       })
       .eq('id', data.id)
     if (locErr) {
-      console.error('[addStop] geocode update error', {
-        userId,
-        tourneeId,
-        code: locErr.code,
-      })
+      logDbError('[addStop] geocode update error', locErr, { userId, tourneeId })
     }
   }
 
@@ -292,7 +272,7 @@ export async function deleteStop(stopId: string): Promise<SimpleResult> {
   const supabase = createServiceClient()
   const { error } = await supabase.from('stops').delete().eq('id', stopId)
   if (error) {
-    console.error('[deleteStop] db error', { userId, stopId, code: error.code })
+    logDbError('[deleteStop] db error', error, { userId, stopId })
     return { ok: false, error: 'db_error' }
   }
 
@@ -350,11 +330,7 @@ export async function reorderStops(
       .eq('id', newOrder[i])
       .eq('tournee_id', tourneeId)
     if (error) {
-      console.error('[reorderStops] db error', {
-        userId,
-        tourneeId,
-        code: error.code,
-      })
+      logDbError('[reorderStops] db error', error, { userId, tourneeId })
       return { ok: false, error: 'db_error' }
     }
   }
@@ -388,11 +364,7 @@ export async function markStopDelivered(
     .update({ status: 'completed', completed_at: new Date().toISOString() })
     .eq('id', stopId)
   if (error) {
-    console.error('[markStopDelivered] db error', {
-      userId,
-      stopId,
-      code: error.code,
-    })
+    logDbError('[markStopDelivered] db error', error, { userId, stopId })
     return { ok: false, error: 'db_error' }
   }
 

@@ -1,6 +1,7 @@
 import 'server-only'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import type { DomainError } from '@/lib/api/errors'
 import type { InvoiceFormValues } from '../schemas'
 import {
@@ -92,7 +93,7 @@ export async function createInvoiceDraft(
     .single()
 
   if (rpcErr || !rawResult) {
-    console.error('[createInvoiceDraft] rpc error', { code: rpcErr?.code })
+    logDbError('[createInvoiceDraft] rpc error', rpcErr, { userId })
     return { ok: false, error: domainErrorFor(rpcErr?.code) }
   }
 
@@ -137,7 +138,7 @@ export async function updateInvoiceDraft(
     .single()
 
   if (rpcErr || !rawResult) {
-    console.error('[updateInvoiceDraft] rpc error', { code: rpcErr?.code })
+    logDbError('[updateInvoiceDraft] rpc error', rpcErr, { userId, invoiceId })
     return { ok: false, error: domainErrorFor(rpcErr?.code) }
   }
 

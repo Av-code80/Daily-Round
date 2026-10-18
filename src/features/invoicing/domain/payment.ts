@@ -1,5 +1,6 @@
 import 'server-only'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import type { DomainError } from '@/lib/api/errors'
 import type { PaymentStatus } from '../schemas'
 
@@ -34,11 +35,7 @@ export async function setPaymentStatus(
   if (error) {
     // No row matched: either not this user's invoice, or still a draft.
     if (error.code === 'PGRST116') return { ok: false, error: 'not_found' }
-    console.error('[setPaymentStatus] db error', {
-      userId,
-      invoiceId,
-      code: error.code,
-    })
+    logDbError('[setPaymentStatus] db error', error, { userId, invoiceId })
     return { ok: false, error: 'db_error' }
   }
 

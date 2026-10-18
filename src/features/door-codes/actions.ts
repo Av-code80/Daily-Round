@@ -2,6 +2,7 @@
 import { auth } from '@/lib/auth'
 import { DoorCodeFormValues, doorCodeSchema } from './schemas'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import { revalidateTag } from 'next/cache'
 import OpenAI from 'openai'
 import { z } from 'zod'
@@ -69,12 +70,7 @@ export async function createDoorCode(
     .single()
 
   if (error) {
-    console.error('[createDoorCode] db error', {
-      userId: session.user.id,
-      code: error.code,
-      message: error.message,
-      details: error.details,
-    })
+    logDbError('[createDoorCode] db error', error, { userId: session.user.id })
     return { ok: false, error: 'db_error' }
   }
 

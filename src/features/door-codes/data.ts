@@ -2,6 +2,7 @@ import 'server-only'
 import { cacheLife, cacheTag } from 'next/cache'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 
 const listParamsSchema = z.object({
   search: z.string().trim().max(100).optional(),
@@ -48,7 +49,7 @@ export async function listDoorCodes(params: z.infer<typeof listParamsSchema>) {
   const { data, error } = await query
 
   if (error) {
-    console.error('[listDoorCodes] db error', { code: error.code })
+    logDbError('[listDoorCodes] db error', error)
     return []
   }
 

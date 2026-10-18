@@ -1,5 +1,6 @@
 import 'server-only'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import { DomainError } from '@/lib/api/errors'
 
 // Business errors the transport layer maps to HTTP status codes.
@@ -49,12 +50,7 @@ export async function finaliseInvoice(
       return { ok: false, error: 'missing_issuer' }
     }
 
-    console.error('[finaliseInvoice] rpc error', {
-      userId,
-      invoiceId,
-      code: error.code,
-      message: error.message,
-    })
+    logDbError('[finaliseInvoice] rpc error', error, { userId, invoiceId })
     return { ok: false, error: 'db_error' }
   }
 

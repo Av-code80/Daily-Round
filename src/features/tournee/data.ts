@@ -2,6 +2,7 @@ import 'server-only'
 import { cacheLife, cacheTag } from 'next/cache'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase/service'
+import { logDbError } from '@/lib/supabase/log-error'
 import type { Database } from '@/lib/types/database'
 import type { TourneeStatus } from './schemas'
 
@@ -62,7 +63,7 @@ export async function listMyTournees(
     .limit(50)
 
   if (error) {
-    console.error('[listMyTournees] db error', { userId, code: error.code })
+    logDbError('[listMyTournees] db error', error, { userId })
     return []
   }
 
@@ -94,11 +95,7 @@ export async function getTournee(
 
   if (error) {
     if (error.code === 'PGRST116') return null // 0 rows
-    console.error('[getTournee] db error', {
-      userId,
-      tourneeId,
-      code: error.code,
-    })
+    logDbError('[getTournee] db error', error, { userId, tourneeId })
     return null
   }
 
@@ -141,11 +138,7 @@ export async function listStops(
     .order('order_index', { ascending: true })
 
   if (error) {
-    console.error('[listStops] db error', {
-      userId,
-      tourneeId,
-      code: error.code,
-    })
+    logDbError('[listStops] db error', error, { userId, tourneeId })
     return []
   }
 
