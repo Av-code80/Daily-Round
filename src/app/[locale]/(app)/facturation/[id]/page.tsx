@@ -50,7 +50,7 @@ async function DocumentSlot({ params }: { params: Params }) {
   const { locale, id } = await params
   setRequestLocale(locale)
 
-  return <InvoiceDocument invoiceId={id} locale={locale} />
+  return <InvoiceDocument invoiceId={id} />
 }
 
 function ToolbarSkeleton() {

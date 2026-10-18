@@ -1,5 +1,7 @@
 import { Suspense } from 'react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Eye } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
 import { InvoiceEditor } from '@/features/invoicing/components/InvoiceEditor'
 
 type Params = Promise<{ locale: string; id: string }>
@@ -22,15 +24,26 @@ export default function EditInvoicePage({ params }: { params: Params }) {
 }
 
 async function EditorHeader({ params }: { params: Params }) {
-  const { locale } = await params
+  const { locale, id } = await params
   setRequestLocale(locale)
   const t = await getTranslations('Invoicing.form')
 
   return (
     <header className='space-y-1 pt-2'>
-      <h1 className='text-3xl font-bold tracking-tight text-[#1B2838] dark:text-foreground'>
-        {t('editTitle')}
-      </h1>
+      <div className='flex items-start justify-between gap-3'>
+        <h1 className='text-3xl font-bold tracking-tight text-[#1B2838] dark:text-foreground'>
+          {t('editTitle')}
+        </h1>
+        {/* Finalisation is irreversible, so seeing the rendered document
+            before freezing it is the point of the preview. */}
+        <Link
+          href={`/facturation/${id}`}
+          className='mt-1 inline-flex shrink-0 items-center gap-1.5 text-sm text-foreground/60 hover:text-foreground'
+        >
+          <Eye className='h-4 w-4' aria-hidden />
+          {t('preview')}
+        </Link>
+      </div>
       <p className='text-sm text-foreground/60'>{t('editHint')}</p>
     </header>
   )

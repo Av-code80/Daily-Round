@@ -261,6 +261,7 @@
       "save": "Save",
       "saving": "Saving…",
       "editTitle": "Edit draft",
+      "preview": "Preview",
       "editHint": "Everything stays editable until the invoice is finalised."
     },
     "voice": {
@@ -355,6 +356,9 @@
       "title": "Invoice",
       "siret": "SIRET",
       "siren": "SIREN",
+      "draftBanner": "Draft preview: this document has no legal value and must not be sent. Finalise it to assign a number.",
+      "draftLabel": "Draft",
+      "issuerMissing": "Billing identity not filled in yet",
       "issuedOn": "Issued on {date}",
       "dueOn": "Due on {date}",
       "billedTo": "Billed to",
