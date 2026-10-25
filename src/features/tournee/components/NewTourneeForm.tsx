@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
@@ -45,11 +45,12 @@ export function NewTourneeForm() {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
   } = form
-  const vehicle = watch('vehicle_type')
+  // useWatch, not watch(): watch() returns a new function on every render,
+  // which makes the React Compiler skip memoising the whole component.
+  const vehicle = useWatch({ control: form.control, name: 'vehicle_type' })
 
   const mutation = useMutation({
     mutationFn: createTournee,

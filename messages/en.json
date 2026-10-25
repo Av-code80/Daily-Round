@@ -356,6 +356,12 @@
       "title": "Invoice",
       "siret": "SIRET",
       "siren": "SIREN",
+      "operationCategoryMention": "Nature of the operation: {category}",
+      "operationCategories": {
+        "goods": "supply of goods",
+        "services": "supply of services",
+        "mixed": "supply of goods and services"
+      },
       "draftBanner": "Draft preview: this document has no legal value and must not be sent. Finalise it to assign a number.",
       "draftLabel": "Draft",
       "issuerMissing": "Billing identity not filled in yet",

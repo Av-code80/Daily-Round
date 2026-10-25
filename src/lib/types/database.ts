@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5"
+    PostgrestVersion: "14.15"
   }
   graphql_public: {
     Tables: {
@@ -398,6 +398,7 @@ export type Database = {
           kind: Database["public"]["Enums"]["invoice_kind"]
           notes: string | null
           number: string | null
+          operation_category: Database["public"]["Enums"]["operation_category"]
           paid_on: string | null
           payment_status: Database["public"]["Enums"]["invoice_payment_status"]
           status: Database["public"]["Enums"]["invoice_status"]
@@ -435,6 +436,7 @@ export type Database = {
           kind?: Database["public"]["Enums"]["invoice_kind"]
           notes?: string | null
           number?: string | null
+          operation_category?: Database["public"]["Enums"]["operation_category"]
           paid_on?: string | null
           payment_status?: Database["public"]["Enums"]["invoice_payment_status"]
           status?: Database["public"]["Enums"]["invoice_status"]
@@ -472,6 +474,7 @@ export type Database = {
           kind?: Database["public"]["Enums"]["invoice_kind"]
           notes?: string | null
           number?: string | null
+          operation_category?: Database["public"]["Enums"]["operation_category"]
           paid_on?: string | null
           payment_status?: Database["public"]["Enums"]["invoice_payment_status"]
           status?: Database["public"]["Enums"]["invoice_status"]
@@ -1673,6 +1676,7 @@ export type Database = {
       invoice_kind: "invoice" | "credit_note"
       invoice_payment_status: "unpaid" | "paid"
       invoice_status: "draft" | "finalised"
+      operation_category: "goods" | "services" | "mixed"
       stop_status: "pending" | "completed" | "failed"
       tournee_status: "pending" | "in_progress" | "completed"
       vat_regime: "franchise" | "standard"
@@ -1825,6 +1829,7 @@ export const Constants = {
       invoice_kind: ["invoice", "credit_note"],
       invoice_payment_status: ["unpaid", "paid"],
       invoice_status: ["draft", "finalised"],
+      operation_category: ["goods", "services", "mixed"],
       stop_status: ["pending", "completed", "failed"],
       tournee_status: ["pending", "in_progress", "completed"],
       vat_regime: ["franchise", "standard"],

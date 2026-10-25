@@ -29,6 +29,7 @@ const lineSchema = z.object({
 
 const amountsSchema = z.object({
   vat_regime: z.enum(['franchise', 'standard']),
+  operation_category: z.enum(['goods', 'services', 'mixed']),
   total_excl_vat: z.number(),
   vat_amount: z.number(),
   total_incl_vat: z.number(),
@@ -83,6 +84,7 @@ type Party = {
 
 type DocumentView = {
   isDraft: boolean
+  operationCategory: 'goods' | 'services' | 'mixed'
   /** Null on a draft: a legal number is only consumed at finalisation. */
   number: string | null
   issuedOn: string | null
@@ -140,6 +142,7 @@ export async function InvoiceDocument({ invoiceId }: Props) {
         postalCode: client.postal_code,
         city: client.city,
       },
+      operationCategory: draft.operation_category,
       vatRegime: draft.vat_regime,
       totalExclVat: draft.total_excl_vat,
       vatAmount: draft.vat_amount,
@@ -171,6 +174,7 @@ export async function InvoiceDocument({ invoiceId }: Props) {
         postalCode: invoice.client_postal_code,
         city: invoice.client_city,
       },
+      operationCategory: invoice.operation_category,
       vatRegime: invoice.vat_regime,
       totalExclVat: invoice.total_excl_vat,
       vatAmount: invoice.vat_amount,
@@ -361,6 +365,11 @@ export async function InvoiceDocument({ invoiceId }: Props) {
       </div>
 
       <div className='mt-7 border-t border-foreground/10 pt-4 text-xs leading-relaxed text-foreground/60'>
+        <p className='text-foreground/70'>
+          {t('document.operationCategoryMention', {
+            category: t(`document.operationCategories.${view.operationCategory}`),
+          })}
+        </p>
         {view.vatRegime === 'franchise' && (
           <p className='text-foreground/70'>{t('document.franchiseMention')}</p>
         )}

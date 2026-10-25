@@ -291,6 +291,7 @@ export async function getIssuer(userId: string): Promise<Issuer | null> {
 // ============================================================
 
 const INVOICE_DETAIL_COLS = `id, number, kind, status, payment_status, vat_regime, billing_unit,
+   operation_category,
    issued_on, due_on, paid_on, total_excl_vat, vat_amount, total_incl_vat,
    notes, finalised_at, created_at,
    client_name, client_siret, client_vat_number, client_address_line,

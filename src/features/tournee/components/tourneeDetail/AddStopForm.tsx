@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
@@ -32,7 +32,7 @@ export function AddStopForm({ tourneeId }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm<StopFormInput, unknown, StopFormValues>({
     resolver: zodResolver(stopFormSchema),
@@ -46,7 +46,9 @@ export function AddStopForm({ tourneeId }: Props) {
     },
   })
 
-  const notesValue = watch('notes') ?? ''
+  // useWatch, not watch(): watch() returns a new function on every render,
+  // which makes the React Compiler skip memoising the whole component.
+  const notesValue = useWatch({ control, name: 'notes' }) ?? ''
 
   function onSubmit(values: StopFormValues) {
     setServerError(null)

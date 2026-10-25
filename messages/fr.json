@@ -356,6 +356,12 @@
       "title": "Facture",
       "siret": "SIRET",
       "siren": "SIREN",
+      "operationCategoryMention": "Nature de l'opération : {category}",
+      "operationCategories": {
+        "goods": "livraison de biens",
+        "services": "prestation de services",
+        "mixed": "livraison de biens et prestation de services"
+      },
       "draftBanner": "Aperçu d'un brouillon : ce document n'a aucune valeur légale et ne doit pas être envoyé. Finalisez-le pour lui attribuer un numéro.",
       "draftLabel": "Brouillon",
       "issuerMissing": "Identité de facturation non renseignée",
