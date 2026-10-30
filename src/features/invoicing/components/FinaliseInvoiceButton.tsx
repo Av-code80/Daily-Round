@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { Check, Loader2, X } from 'lucide-react'
+import { AlertTriangle, Check, Loader2, X } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,15 @@ import { useFinaliseInvoice } from '../hooks/use-finalise-invoice'
 type Props = {
   invoiceId: string
   lineCount: number
+  /** Warn, never block: an invoice to an individual legitimately has none. */
+  clientSiretMissing?: boolean
 }
 
-export function FinaliseInvoiceButton({ invoiceId, lineCount }: Props) {
+export function FinaliseInvoiceButton({
+  invoiceId,
+  lineCount,
+  clientSiretMissing = false,
+}: Props) {
   const t = useTranslations('Invoicing.finalise')
   const [open, setOpen] = useState(false)
   const mutation = useFinaliseInvoice()
@@ -63,6 +69,13 @@ export function FinaliseInvoiceButton({ invoiceId, lineCount }: Props) {
               <span className='text-foreground/70'>{t('cannotDelete')}</span>
             </li>
           </ul>
+
+          {clientSiretMissing && (
+            <p className='flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 text-sm text-amber-700 dark:text-amber-500'>
+              <AlertTriangle className='mt-0.5 h-4 w-4 shrink-0' aria-hidden />
+              {t('missingClientSiret')}
+            </p>
+          )}
 
           <DialogFooter className='gap-2 sm:gap-2'>
             {/* Cancel first: the safe choice is the default focus target */}

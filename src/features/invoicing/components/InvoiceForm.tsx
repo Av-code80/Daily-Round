@@ -33,6 +33,7 @@ const BLANK_INVOICE: InvoiceFormValues = {
 type ClientOption = {
   id: string
   name: string
+  siret: string | null
   min_billable_quantity: number | null
 }
 
@@ -77,8 +78,14 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
   // Floor comes from the selected client, not from a separate lookup —
   // the same list we render already carries min_billable_quantity.
   const selectedClientId = useWatch({ control, name: 'client_id' })
-  const floor =
-    options.find((c) => c.id === selectedClientId)?.min_billable_quantity ?? null
+  const selectedClient = options.find((c) => c.id === selectedClientId) ?? null
+  const floor = selectedClient?.min_billable_quantity ?? null
+
+  // A client created from the combobox shortcut has a name and nothing
+  // else. From 1 September 2026 an invoice whose client SIREN is missing
+  // is rejected by the directory rather than merely fined, so the driver
+  // is warned before freezing the document, not after.
+  const clientSiretMissing = selectedClient !== null && !selectedClient.siret
 
   // Dictated lines are a PROPOSAL: they land in the form and nothing is
   // saved until the driver presses Save. Fully blank rows make way for
@@ -254,7 +261,11 @@ export function InvoiceForm({ invoiceId, defaultValues, initialClient }: Props) 
         {/* Finalisation is only offered once the draft exists — it freezes
             whatever is stored, not what is currently typed. */}
         {invoiceId && (
-          <FinaliseInvoiceButton invoiceId={invoiceId} lineCount={fields.length} />
+          <FinaliseInvoiceButton
+            invoiceId={invoiceId}
+            lineCount={fields.length}
+            clientSiretMissing={clientSiretMissing}
+          />
         )}
       </div>
     </form>

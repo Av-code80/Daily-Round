@@ -15,6 +15,7 @@ import { InvoiceForm } from './InvoiceForm'
 const embeddedClientSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  siret: z.string().nullable(),
   min_billable_quantity: z.number().nullable(),
 })
 

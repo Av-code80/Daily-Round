@@ -228,7 +228,8 @@
       "cannotDelete": "Vous ne pourrez plus la supprimer",
       "cancel": "Annuler",
       "pending": "Finalisation…",
-      "blockedNoLines": "Ajoutez au moins une ligne pour pouvoir finaliser."
+      "blockedNoLines": "Ajoutez au moins une ligne pour pouvoir finaliser.",
+      "missingClientSiret": "Ce client n'a pas de SIRET. À partir du 1er septembre 2026, une facture sans le SIREN du client est rejetée par l'annuaire, ce qui bloque le paiement."
     },
     "toasts": {
       "finalised": "Facture {number} finalisée",

@@ -228,7 +228,8 @@
       "cannotDelete": "You will no longer be able to delete it",
       "cancel": "Cancel",
       "pending": "Finalising…",
-      "blockedNoLines": "Add at least one line to enable finalisation."
+      "blockedNoLines": "Add at least one line to enable finalisation.",
+      "missingClientSiret": "This client has no SIRET. From 1 September 2026, an invoice without the client's SIREN is rejected by the directory, which blocks payment."
     },
     "toasts": {
       "finalised": "Invoice {number} finalised",
