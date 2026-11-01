@@ -353,6 +353,17 @@
       "remove": "Remove line {index}",
       "floorApplied": "{entered} entered → {billed} billed (this client's contractual floor)"
     },
+    "clients": {
+      "title": "Clients",
+      "hint": "The clients you invoice. They are created from the invoice form.",
+      "empty": "No client",
+      "emptyHint": "Your clients will appear here once you have invoiced one.",
+      "siren": "SIREN",
+      "siretMissing": "SIRET missing",
+      "cityUnknown": "City not set",
+      "paymentTerms": "{days}-day terms",
+      "incompleteCount": "{count, plural, one {# client has no SIRET} other {# clients have no SIRET}}: their invoices will be rejected from 1 September 2026."
+    },
     "document": {
       "title": "Invoice",
       "siret": "SIRET",

@@ -353,6 +353,17 @@
       "remove": "Supprimer la ligne {index}",
       "floorApplied": "{entered} saisis → {billed} facturés (minimum contractuel de ce client)"
     },
+    "clients": {
+      "title": "Clients",
+      "hint": "Les clients que vous facturez. Ils sont créés depuis le formulaire de facture.",
+      "empty": "Aucun client",
+      "emptyHint": "Vos clients apparaîtront ici dès que vous en aurez facturé un.",
+      "siren": "SIREN",
+      "siretMissing": "SIRET manquant",
+      "cityUnknown": "Ville non renseignée",
+      "paymentTerms": "Paiement à {days} j",
+      "incompleteCount": "{count, plural, one {# client sans SIRET} other {# clients sans SIRET}} : leurs factures seront rejetées à partir du 1er septembre 2026."
+    },
     "document": {
       "title": "Facture",
       "siret": "SIRET",

@@ -86,6 +86,9 @@ function clientName(embed: z.infer<typeof clientEmbedSchema>): string {
 // Hard caps: the server never returns more than this, whatever is asked.
 const SEARCH_LIMIT = 8
 const RECENT_LIMIT = 5
+// Same hard-cap discipline as every other list: the server never returns
+// more than this, whatever the page asks for.
+const CLIENT_PAGE_SIZE = 100
 const PAGE_SIZE = 25
 
 const LIST_COLS =
@@ -186,6 +189,32 @@ export async function getInvoiceSummary(userId: string): Promise<InvoiceSummary>
 // Two entry points for the combobox:
 //   - before typing: the 5 most recently billed clients (~80% of picks)
 //   - from 2 characters: trigram search, capped at 8 rows
+
+// The full list, for the clients page. Separate from listRecentClients,
+// whose 5-row cap exists to feed the combobox — reusing it here would
+// silently hide clients 6 and beyond.
+export async function listAllClients(userId: string): Promise<ClientOption[]> {
+  'use cache'
+  cacheLife('minutes')
+  cacheTag(`clients:${userId}`)
+
+  const parsed = userIdSchema.safeParse(userId)
+  if (!parsed.success) return []
+
+  const supabase = createServiceClient()
+  const { data, error } = await supabase
+    .from('invoice_clients')
+    .select(CLIENT_COLS)
+    .eq('user_id', parsed.data)
+    .order('name')
+    .limit(CLIENT_PAGE_SIZE)
+
+  if (error) {
+    logDbError('[listAllClients] db error', error, { userId: parsed.data })
+    return []
+  }
+  return data ?? []
+}
 
 export async function listRecentClients(userId: string): Promise<ClientOption[]> {
   'use cache'
